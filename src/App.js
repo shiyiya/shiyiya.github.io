@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Component } from 'react'
-import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin'
+import { Admin, ListGuesser, Resource } from 'react-admin'
 import { PostCreate } from './components/post/create'
 import { PostList } from './components/post/list'
 import { PostShow } from './components/post/show'
 import { PostEdit } from './components/post/edit'
-import graphql from './graphql'
+import graphql from './provider/graphql'
 import {
   VideoLibrary,
   AccountBox,
@@ -13,6 +13,11 @@ import {
   Loyalty,
   Dns,
 } from '@material-ui/icons'
+import authProvider from './provider/auth'
+import Dashboard from './components/Dashboard'
+import { createBrowserHistory as createHistory } from 'history'
+
+const history = createHistory()
 
 class App extends Component {
   constructor() {
@@ -34,7 +39,12 @@ class App extends Component {
     }
 
     return (
-      <Admin dataProvider={dataProvider}>
+      <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        dashboard={Dashboard}
+        history={history}
+      >
         <Resource
           name="Post"
           list={PostList}

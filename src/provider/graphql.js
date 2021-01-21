@@ -9,7 +9,7 @@ import {
   GET_ONE,
 } from 'ra-core'
 import { DELETE, UPDATE } from 'react-admin'
-import gqler from './graphql/index'
+import gqler from '../graphql/index'
 
 const customBuildQuery = (introspectionResults) => {
   const buildQuery = buildQueryFactory(introspectionResults)
