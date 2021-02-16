@@ -1,6 +1,136 @@
 import gql from 'graphql-tag'
 
 const ql = {
+  queryUsers: gql`
+    query {
+      queryUsers {
+        id
+        email
+        username
+        createdAt
+      }
+    }
+  `,
+  queryUserById: gql`
+    query queryUserById($id: String!) {
+      queryUserById(id: $id) {
+        id
+        email
+        username
+        createdAt
+        avatar
+        bio
+      }
+    }
+  `,
+  queryUsersByIds: gql`
+    query queryUsersByIds($ids: [String!]) {
+      queryUsersByIds(ids: $ids) {
+        id
+        email
+        username
+        createdAt
+      }
+    }
+  `,
+  updateUser: gql`
+    query updateUser(
+      $id: String!
+      $email: String!
+      $username: String
+      $avatar: String
+      $bio: String
+    ) {
+      updateUser(
+        options: {
+          id: $id
+          email: $email
+          username: $username
+          avatar: $avatar
+          bio: $bio
+        }
+      ) {
+        id
+      }
+    }
+  `,
+  queryVideos: gql`
+    query queryVideos($offset: Int, $limit: Int) {
+      queryVideos(offset: $offset, limit: $limit) {
+        id
+        title
+        createdAt
+        bindPost {
+          id
+          title
+        }
+      }
+    }
+  `,
+  queryVideoById: gql`
+    query queryVideoById($id: String!) {
+      queryVideoById(id: $id) {
+        id
+        title
+        createdAt
+        subtitle
+        playUrl
+        cover
+        episode
+        bindPost {
+          id
+          title
+        }
+      }
+    }
+  `,
+  updateVideo: gql`
+    mutation updateVideo(
+      $id: String!
+      $title: String!
+      $subtitle: String
+      $cover: String
+      $playUrl: String!
+      $episode: Int
+    ) {
+      updateVideo(
+        options: {
+          id: $id
+          title: $title
+          subtitle: $subtitle
+          cover: $cover
+          playUrl: $playUrl
+          episode: $episode
+        }
+      ) {
+        id
+      }
+    }
+  `,
+  createVideo: gql`
+    mutation createVideo(
+      $title: String!
+      $subtitle: String
+      $cover: String
+      $playUrl: String!
+      $episode: Int
+      $bindPostId: String!
+    ) {
+      createVideo(
+        options: {
+          title: $title
+          subtitle: $subtitle
+          cover: $cover
+          playUrl: $playUrl
+          episode: $episode
+          bindPostId: $bindPostId
+        }
+      ) {
+        id
+      }
+    }
+  `,
+
   queryPosts: gql`
     mutation queryPosts(
       $id: String
@@ -29,39 +159,6 @@ const ql = {
         creator {
           id
           username
-        }
-      }
-    }
-  `,
-  queryUsers: gql`
-    query {
-      queryUsers {
-        id
-        email
-        username
-        createdAt
-      }
-    }
-  `,
-  queryUsersByIds: gql`
-    query queryUsersByIds($ids: [String!]) {
-      queryUsersByIds(ids: $ids) {
-        id
-        email
-        username
-        createdAt
-      }
-    }
-  `,
-  queryVideos: gql`
-    query queryVideos($offset: Int, $limit: Int) {
-      queryVideos(offset: $offset, limit: $limit) {
-        id
-        title
-        createdAt
-        bindPost {
-          id
-          title
         }
       }
     }

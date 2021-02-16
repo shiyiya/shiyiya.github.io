@@ -11,6 +11,16 @@ import {
 import { DELETE, UPDATE } from 'react-admin'
 import gqler from '../graphql/index'
 
+const parseResponse = (result) => {
+  console.log(result)
+
+  if (result) {
+    return { data: result }
+  } else {
+    return { data: null }
+  }
+}
+
 const customBuildQuery = (introspectionResults) => {
   const buildQuery = buildQueryFactory(introspectionResults)
 
@@ -23,14 +33,7 @@ const customBuildQuery = (introspectionResults) => {
         variables: { id: params.id },
         parseResponse: ({ data }) => {
           const result = data['query' + resource + 'ById']
-
-          console.log('GET_ONE result', result)
-
-          if (result) {
-            return { data: result }
-          } else {
-            return { data: null }
-          }
+          return parseResponse(result)
         },
       }
     }
@@ -42,13 +45,9 @@ const customBuildQuery = (introspectionResults) => {
         parseResponse: ({ data }) => {
           const result = data['create' + resource]
 
-          console.log('result', result)
+          console.log('create result', result)
 
-          if (result) {
-            return { data: result, total: 99 }
-          } else {
-            return { data: [], total: 0 }
-          }
+          return parseResponse(result)
         },
       }
     }
@@ -62,11 +61,7 @@ const customBuildQuery = (introspectionResults) => {
 
           console.log('GET_MANY result', result)
 
-          if (result) {
-            return { data: result, total: 99 }
-          } else {
-            return { data: [], total: 0 }
-          }
+          return parseResponse(result)
         },
       }
     }
@@ -80,6 +75,7 @@ const customBuildQuery = (introspectionResults) => {
         variables: {
           offset: params.pagination.page - 1,
           limit: params.pagination.perPage,
+          ...params.filter,
         },
         parseResponse: ({ data }) => {
           const result = data['query' + resource + 's']
@@ -128,7 +124,7 @@ const customBuildQuery = (introspectionResults) => {
           if (result) {
             return { data: result }
           } else {
-            throw new Error(`Could not delete ${resource}`)
+            throw new Error(`Could not update ${resource}`)
           }
         },
       }

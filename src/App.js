@@ -1,21 +1,22 @@
 import * as React from 'react'
 import { Component } from 'react'
-import { Admin, ListGuesser, Resource } from 'react-admin'
+import { Admin, Resource } from 'react-admin'
 import { PostCreate } from './components/post/create'
 import { PostList } from './components/post/list'
 import { PostShow } from './components/post/show'
 import { PostEdit } from './components/post/edit'
 import graphql from './provider/graphql'
-import {
-  VideoLibrary,
-  AccountBox,
-  Description,
-  Loyalty,
-  Dns,
-} from '@material-ui/icons'
+import { VideoLibrary, AccountBox, Description } from '@material-ui/icons'
 import authProvider from './provider/auth'
 import Dashboard from './components/Dashboard'
 import { createBrowserHistory as createHistory } from 'history'
+import { VideoEdit } from './components/video/edit'
+import { VideoShow } from './components/video/show'
+import { VideoList } from './components/video/list'
+import { UserList } from './components/user/list'
+import { UserShow } from './components/user/show'
+import { UserEdit } from './components/user/edit'
+import { VideoCreate } from './components/video/create'
 
 const history = createHistory()
 
@@ -41,7 +42,7 @@ class App extends Component {
     return (
       <Admin
         dataProvider={dataProvider}
-        authProvider={authProvider}
+        // authProvider={authProvider}
         dashboard={Dashboard}
         history={history}
       >
@@ -53,10 +54,23 @@ class App extends Component {
           show={PostShow}
           icon={Description}
         />
-        <Resource name="User" icon={AccountBox} list={ListGuesser} />
-        <Resource name="Video" icon={VideoLibrary} list={ListGuesser} />
-        <Resource name="Category" icon={Dns} list={ListGuesser} />
-        <Resource name="Tag" icon={Loyalty} list={ListGuesser} />
+        <Resource
+          name="Video"
+          icon={VideoLibrary}
+          list={VideoList}
+          edit={VideoEdit}
+          show={VideoShow}
+          create={VideoCreate}
+        />
+        <Resource
+          name="User"
+          icon={AccountBox}
+          list={UserList}
+          show={UserShow}
+          edit={UserEdit}
+        />
+        {/* <Resource name="Category" icon={Dns} list={ListGuesser} />
+        <Resource name="Tag" icon={Loyalty} list={ListGuesser} /> */}
       </Admin>
     )
   }
