@@ -3,7 +3,7 @@ title: Do something interesting with JS
 date: 2018-06-30 10:51:10
 update: 2019-10-11 10:51:10
 tags: [JS]
-urlname: Do-something-interesting-with-JS
+urlname: do-something-interesting-with-JS
 ---
 
 ## 离开和进入页面时改变 title
@@ -30,12 +30,12 @@ visibilitychange 事件
 
 ```js
 var DefaultTitle = document.title
-document.addEventListener('visibilitychange', function() {
+document.addEventListener('visibilitychange', function () {
   if (document.hidden) {
     document.title = '你要去哪裏呢~~~'
   } else {
     document.title = 'QwQ~~'
-    setTimeout(function() {
+    setTimeout(function () {
       document.title = DefaultTitle
     }, 2000)
   }
@@ -49,7 +49,7 @@ document.addEventListener('visibilitychange', function() {
 原理：监听 copy 事件，获取 Copy 内容，操作剪切板并修改剪切板内容。
 
 ```js
-document.addEventListener('copy', function(e) {
+document.addEventListener('copy', function (e) {
   var word = window.getSelection
     ? window.getSelection().toString()
     : document.selection.createRange().text
@@ -76,7 +76,7 @@ function DiyWord(e) {
 
 ```js
 var _log = console.log
-console.log = function() {
+console.log = function () {
   _log.call(
     console,
     '%c' + [].slice.call(arguments).join(' '),

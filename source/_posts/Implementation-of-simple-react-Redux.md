@@ -1,11 +1,11 @@
 ---
-title: react redux introduction
+title: Implementation simple react Redux
 date: 2019-03-12 14:42
 update: 2019-10-02 21:39:04
 tags: [redux, react, react-redux]
 photos:
   - https://i.loli.net/2019/10/02/geLHQRJlTy6Nhxw.png
-urlname: Implementation-of-simple-react-Redux
+urlname: implementation-simple-react-Redux
 ---
 
 ## 前言

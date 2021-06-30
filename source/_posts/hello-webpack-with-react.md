@@ -2,9 +2,8 @@
 title: hello webpack with react
 date: 2018-01-27
 update: 2019-10-07 16:13:44
-tags:
-  - webpack
-  - react
+tags: [react, webpack]
+urlname: how-to-set-correctly-font-family
 ---
 
 虽然 React 官方有提供一个 create-react-app 的脚手架，并给出了各种在开发过程中需要的扩展配置文档：比如如果你想用 sass，它会教你怎么做，不知道如何部署，它也告诉你了；甚至还告诉你如何用 prettier 去 lint 代码；但本着折腾的精神，也来小小实现一番。
@@ -62,12 +61,12 @@ module.exports = {
   devtool: 'inline-source-map',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build')
   },
   devServer: {
     contentBase: './build',
-    port: 9000,
-  },
+    port: 9000
+  }
 }
 ```
 

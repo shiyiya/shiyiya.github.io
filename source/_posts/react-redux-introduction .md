@@ -1,5 +1,5 @@
 ---
-title: 理解 React-Redux
+title: react redux introduction
 date: 2018-05-22
 update: 2019-10-07 18:16:14
 tags: [react-redux]
