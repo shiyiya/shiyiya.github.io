@@ -1,0 +1,51 @@
+<div class="hd logodiv">
+    <p class="logot">
+        <span class="logo_1">&lt;</span>
+        <span class="logo_2">/</span>
+        <span class="logo_3">#</span>
+        <a class="site-name" href="/"
+           title="<%= theme.logo_title %>">
+            <ruby>
+                佚
+                <rp>(</rp>
+                <rt>e</rt>
+                <rp>)</rp>
+                名
+                <rp>(</rp>
+                <rt>m</rt>
+                <rp>)</rp>
+            </ruby>
+        </a>
+        <span class="logo_3">#</span>
+        <span class="logo_2">/</span>
+        <span class="logo_1">&gt;</span>
+    </p>
+</div>
+<%- partial('_partial/nav') %>
+<div class="hd">
+    <% var last; %>
+    <% page.posts.each(function (post) { %>
+    <% var year = post.date.year(); %>
+    <% if (last != year){ %>
+    <div class="titlex">
+        <p><span class="title-year">#</span>
+            <%= year %>
+        </p>
+    </div>
+    <% last = year; %>
+    <% } %>
+    <a class="flink"
+       href="<%- url_for(post.path) %>">
+        <div class="list">
+            <div class="postname">
+                <%= post.title %>
+            </div>
+            <div class="posttime">
+                <%- full_date(post.date, 'MMMM D 日') %>
+            </div>
+        </div>
+    </a>
+    <% }) %>
+    <a class="more"
+       href="/archives">More >></a>
+</div>

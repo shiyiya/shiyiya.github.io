@@ -1,0 +1,136 @@
+.posts {
+    width: 900px;
+
+    .replay-btn {
+        background-color: #4b5e7b;
+        width: 40px;
+        color: #fff;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 100%;
+        position: absolute;
+    }
+
+    .post-title {
+        text-align: center;
+        font-family: 'Zpix', serif;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.2;
+        margin: 1em 0;
+    }
+
+    .outdated-notify {
+        display: none;
+        padding: 10px 14px;
+        margin: 20px 0;
+        color: #333;
+        background: #ffec6f;
+        font-family: 'Zpix', serif;
+        font-size: 12px;
+    }
+
+    .post-content {
+        a {
+            color: #699be9;
+        }
+
+        pre {
+            position: relative;
+            background: #21252b;
+            border-radius: 5px;
+            font: 14px / 22px 'Microsoft YaHei', 'Arial', Sans-Serif;
+            line-height: 1.4;
+            max-width: 800px;
+            max-height: 500px;
+            margin: 0 auto;
+            margin-bottom: 1.6em;
+            overflow: hidden;
+            text-shadow: none;
+            color: #000;
+            padding-top: 30px;
+            padding-right: 2px;
+            padding-bottom: 4px;
+            box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.4);
+
+            &:before {
+                content: ' ';
+                position: absolute;
+                border-radius: 50%;
+                background: #fc625d;
+                width: 12px;
+                height: 12px;
+                left: 12px;
+                margin-top: -18px;
+                box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+                z-index: 2;
+            }
+
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+
+            ::-webkit-scrollbar-button {
+                width: 0px;
+                height: 0px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #e1e1e1;
+                border: 0px none #ffffff;
+                border-radius: 50px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #666666;
+                border: 0px none #ffffff;
+                border-radius: 50px;
+            }
+
+            ::-webkit-scrollbar-corner {
+                background: transparent;
+            }
+
+            code {
+                display: block;
+                width: 100%;
+                max-height: 460px;
+                overflow: auto;
+                padding: 0;
+                padding-left: 6px;
+                background: none;
+            }
+        }
+    }
+
+    .fhr {
+        margin-top: 20px;
+    }
+
+    .highlight {
+        .gutter {
+            .hljs {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+        }
+    }
+
+    .highlight {
+        .code {
+            .hljs {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .posts .outdated-notify {
+        font-size: 12px;
+        margin: 10px 0;
+    }
+}

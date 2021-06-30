@@ -1,0 +1,29 @@
+logo_title: 佚名
+
+style: white
+
+favicon: /favicon.png
+
+menu:
+  归档: /archives
+  友链: /links
+  关于: /about
+  Github: https://github.com/shiyiya
+
+# 做了域名限制，请改成自己的 KEY
+# 若关闭valine 设置enable为false
+valine:
+  enable: false
+  appId: CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz
+  appKey: uWuwGS1xiIwh3zHKENc7ubyL
+
+highlight:
+  enable: false
+
+cdn:
+  enabled: false
+  url: https://cdn.jsdelivr.net/gh/journey-ad/nocilol.me
+
+analytics:
+  enabled: false
+  googleId: UA-71903189-1

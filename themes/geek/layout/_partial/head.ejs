@@ -1,0 +1,21 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <title><%= page.title ? `${page.title} - ${config.title}` : config.title %></title>
+    <% if (theme.cdn.enabled && env.cmd === "generate") { %>
+      <link rel="stylesheet" href="<%= theme.cdn.url %>/css/style.css">
+      <link rel="stylesheet" href="<%= theme.cdn.url %>/libs/highlight/styles/monokai-sublime.css">
+      <link rel="stylesheet" href="<%= theme.cdn.url %>/libs/font-awesome/css/font-awesome.min.css">
+      <link rel="stylesheet" href="<%= theme.cdn.url %>/libs/zpix/zpix.css">
+      <script src="<%= theme.cdn.url %>/js/theme.js"></script>
+    <% } else { %>
+      <%- css('css/style') %>
+      <%- css('libs/highlight/styles/monokai-sublime') %>
+      <%- css('libs/font-awesome/css/font-awesome.min') %>
+      <%- css('libs/zpix/zpix') %>
+      <%- js('js/theme.js') %>
+    <% } %>
+</head>
