@@ -3,7 +3,7 @@ title: Classical inheritance in JavaScript ES5
 date: 2018-12-25
 update: 2019-10-06 11:00:58
 tags: [es5-extends]
-urlname: classical-inheritance-in-JavaScript ES5
+urlname: classical-inheritance-in-JavaScript-ES5
 ---
 
 在 JavaScript 中，最让人困扰的几根莫过于 this、闭包、作用域、原型链，而却常常看又常常忘，最近又看了一下高程感觉清晰了很多，于是就想写在这里（水一篇文章）。
