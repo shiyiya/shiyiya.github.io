@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>react redux introduction - 佚名</title>
+    <title>理解 React-Redux - 佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -30,7 +30,7 @@
 <body id="bodyx" path="archives/react-redux-introduction/">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">react redux introduction</h1>
+    <h1 class="post-title">理解 React-Redux</h1>
     <hr>
 
     
@@ -40,159 +40,80 @@
     
 
     <div class="post-content">
-        <h2>前言</h2><p>在 React 组件中，大部分组件或多或少都会需要一下 <code>状态</code>, 来维持 &amp; 切换自身的 UI 状态, 他可能是自身的 State, 也许是外部传递的 Props, 都可以作为自身 UI 的一个切换的控制开关。</p>
-<p>整个数据流都是从上至下的单项数据流（State -&gt; Props),</p>
+        <p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理。<br>React-Redux 用于连接 React、Redux。</p>
 <span id="more"></span>
 
-<p><img src="https://i.loli.net/2019/10/02/GtReWgBMNsuivoF.gif" alt="3345073650-5a178e6f9acb2_articlex.gif"></p>
-<p>当层级跨越过深，又或者兄弟层级的时候状态传递会很复杂, 组件之间难以“互动”, 你可以将状态替身到一个上层 Container 进行管理然后分发给下面的组件（状态提升）, 组件使用回调来改变上层数据, 当嵌套过多状态过多, 就不好办咯 ~。</p>
-<p><img src="https://i.loli.net/2019/10/02/B3GuUWjyFSOEiQL.gif" alt="1662100370-5a178e850b597_articlex.gif"></p>
-<p>为了更好的管理状态，Redux 将所有状态放置于顶层，所有的 state 都以一个对象树的形式储存在一个单一的 store 中，分发给各个组件。</p>
-<p><img src="https://i.loli.net/2019/10/02/M4uTn3cEBdqao5D.gif" alt="1108238647-5a178e9523864_articlex.gif"></p>
-<p>Redux 推崇 Immutability，接受 action，reducer 接受数据，返回一个全新的 State（Action -&gt; Reducer -&gt; New State），…太繁琐了，算了，进正题 <code>参照其实现一个简单的状态管理</code></p>
-<p><img src="https://i.loli.net/2019/10/02/ayHB7TmZiMtQdYg.png" alt="redux.png"></p>
-<h2>创建模板</h2><p>在此之前先创建 React 基础模版，为了方便使用的是 CRA！</p>
-<pre><code class="shell">npx create-react-app app
-cd app
-mkdir lib/mini-redux # 将在这里存放
-npm start
-</code></pre>
-<p>最终 API，简化 Redux API，No Reducer</p>
-<pre><code class="javascript">const state = &#123;
-  counter: 0,
-&#125;
-
-const actions = &#123;
-  increment(state, data) &#123;
-    state.counter += data
-  &#125;,
-  decrement(state, data) &#123;
-    state.counter -= data
-  &#125;,
-&#125;
-
-const Component = (props) =&gt; (
-  &lt;&gt;
-    &lt;h1&gt;&#123;props.counter&#125;&lt;/h1&gt;
-    &lt;button onClick=&#123;props.increment&#125;&gt;+&lt;/button&gt;
-    &lt;button onClick=&#123;props.decrement&#125;&gt;-&lt;/button&gt;
-  &lt;/&gt;
-)
-
-connect(&#123;
-  state: (state) =&gt; (&#123; conter: state.counter &#125;),
-  actions: (acions) =&gt; (&#123;
-    increment: actions.increment,
-    decrement: actions.decrement,
-  &#125;),
-&#125;)(Component)
-</code></pre>
-<h2>创建 Store</h2><p>Redux：单一数据源，全局 store，immutable。 是单一对象数，我们创建一个存放数据/状态（Store）的对象，当然我们不考虑其他的，不同 React-Redux 接受更多参数，他只接受一个 State 和 actions。</p>
-<pre><code class="javascript">export default class Store &#123;
-  constructor(state = &#123;&#125;, actions = &#123;&#125;) &#123;
-    this.state = this.state
-    this.actions = this.rewriteActions(state, actions)
-    this.listeners = []
-  &#125;
-
-  // 最终 action 是以 xxAction(data) 传入组建使用，所以这里改造一下。
-  rewriteActions(state = &#123;&#125;, actions = &#123;&#125;) &#123;
-    Object.keys(actions).forEach((key) =&gt; &#123;
-      const fn = actions[key]
-      actions[key] = function (data) &#123;
-        fn(state, data) // 这里可以使用 immer 做不可变
-        this.listeners.forEach((listener) =&gt; listener()) // 当数据更改后执行监听
-      &#125;.bind(this)
-    &#125;)
-  &#125;
-
-  subscribe(listener) &#123;
-    this.listeners.push(listener)
-  &#125;
-
-  unSubscribe(listener) &#123;
-    this.listeners = this.listeners.filter((f) =&gt; f !== listener)
-  &#125;
-&#125;
-</code></pre>
-<h2>创建 Provider</h2><p>react-redux 提供了两个重要的对象，Provider 和 connect，前者使 React 组件可被连接（connectable），后者把 React 组件和 Redux 的 store 真正连接起来。</p>
-<p>上面差不多就做好了一个简易的 Store，然后我们创建 Store Provider 以提供给 React 各个组件，也就是顶层的 Provider。</p>
-<pre><code class="javascript">import React from &#39;react&#39;;
-
-//创建 Context
-const Context = React.createContext(null);
-
-export class Provider extends React.Component &#123;
-  render() &#123;
-    return (
-      &lt;Context.Provider value=&#123;this.props.store;&#125;&gt;&#123;this.props.children&#125;&lt;/Context.Provider&gt;
-    );
-  &#125;
-&#125;
-</code></pre>
-<h2>创建链接组件 Connect</h2><p>其实就是一个 HOC；</p>
-<pre><code class="javascript">export const connect = (_state = () =&gt; (&#123;&#125;), _actions = () =&gt; (&#123;&#125;)) =&gt; (
-  Component
-) =&gt;
-  class extends React.Component &#123;
-    static contextType = Context
-    constructor(props) &#123;
-      super(props)
-      this.state = &#123;
-        store: &#123;&#125;,
-      &#125;
-    &#125;
-    componentDidMount() &#123;
-      const &#123; state, actions &#125; = this.context
-
-      this.setState(&#123;
-        store: &#123;
-          ..._state(state),
-          ..._actions(actions),
-        &#125;,
-      &#125;)
-    &#125;
-    render() &#123;
-      return &lt;Component &#123;...this.state.store&#125; /&gt;
-    &#125;
-  &#125;
-</code></pre>
-<h2>试试链接起来！</h2><pre><code class="javascript">import Store from &#39;./mini-redux/store&#39;
-import &#123; connect, Provider &#125; from &#39;./mini-redux/connect&#39;
-
-const state = &#123;
-  counter: 0,
-&#125;
-
-const actions = &#123;
-  increment(state, data) &#123;
-    state.counter += data
-  &#125;,
-  decrement(state, data) &#123;
-    state.counter -= data
-  &#125;,
-&#125;
-
-const store = new Store(&#123; state, actions &#125;)
-
-@connect(&#123;
-  state: (state) =&gt; (&#123; conter: state.counter &#125;),
-  actions: (acions) =&gt; (&#123;
-    increment: actions.increment,
-    decrement: actions.decrement,
-  &#125;),
+<h2>action</h2><p>action =&gt; 是纯声明式的数据结构，只提供事件的所有要素，不提供逻辑,返回一个对象。<br>Action 的任务是描述它想做什么？</p>
+<pre><code class="js">const changeTitle = () =&gt; (&#123;
+  type: &#39;CHANGE_TITLE&#39;, //告诉我们它想改变title，并返回改变的东西。
+  newTitle: &#39;Hello Reducer&#39;
 &#125;)
-class App extends React.Component &#123;
-  render() &#123;
-    return (
-      &lt;div className=&quot;App&quot;&gt;
-        &lt;p&gt;&#123;this.props.conter&#125;&lt;/p&gt;
-        &lt;button onClick=&#123;() =&gt; this.props.increment(1)&#125;&gt;+&lt;/button&gt;
-        &lt;button onClick=&#123;() =&gt; this.props.decrement(1)&#125;&gt;-&lt;/button&gt;
-      &lt;/div&gt;
-    )
+</code></pre>
+<h2>reducer</h2><p>reducer =&gt; 匹配 action,返回新的 state。<br>reducer 就是帮我们做 action 想做的事~如何去做,todo。<br>(state, action) =&gt; newState</p>
+<pre><code class="js">const initialState = &#123;
+  title: &#39;Hello world&#39;
+&#125;
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: action.newTitle //返回一个title覆盖原title，以改变title
+      &#125;
+    default:
+      return state
   &#125;
 &#125;
+</code></pre>
+<h2>store</h2><p>Store =&gt; 就是我们存取状态数据的地方，外加可以订阅状态数据改变时触发的事件。<br>所有的 state 都以一个对象树的形式储存在一个单一的 store 中。</p>
+<p>维持应用的 state；<br>提供 getState() 方法获取 state；<br>提供 dispatch(action) 方法更新 state；<br>通过 subscribe(listener) 注册监听器；<br>const store = createStore(Reducer);<br>console.log(store.getState());//输出{title: “Hello world”}<br>store.dispath(changeTitle());<br>console.log(store.getState());//输出{title: “Hello reducer”}</p>
+<h2>use with react</h2><p>Redux 和 React 之间没有关系。Redux 可以搭配 React、Angular 甚至纯 JS。但是 Redux 还是比较适合和 React 搭配的，因为 React 允许你以 state 的形式来描述界面，而 Redux 非常擅长控制 state 的变化。</p>
+<p>create-react-app demo<br>rm -rf src/*<br>yarn add react-redux redux<br>新建 src/index.js &amp; src/app.js;</p>
+<pre><code class="js">import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+
+const Hello = () =&gt; &lt;h1&gt;&#39;Hello world!!!&#39;&lt;/h1&gt;
+
+ReactDOM.render(&lt;Heloo /&gt;, document.getElementById(&#39;root&#39;))
+</code></pre>
+<p>yarn start 现在刷新浏览器你能看到 Hello world。</p>
+<h2>create store &amp; reducer</h2><p>所有容器组件都可以访问 Redux store，所以可以手动监听它。一种方式是把它以 props 的形式传入到所有容器组件中。但这太麻烦了，因为必须要用 store 把展示组件包裹一层，仅仅是因为恰好在组件树中渲染了一个容器组件。</p>
+<p>建议的方式是使用指定的 React Redux 组件 <Provider> 来 魔法般的 让所有容器组件都可以访问 store，而不必显示地传递它。只需要在渲染根组件时使用即可。</p>
+<pre><code class="js">//src/reducers/index.js
+const initialState = &#123;
+  title: &#39;Hello world&#39;,
+&#125;
+
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: &#39;Hello reducer&#39;,
+      &#125;
+    default:
+      return state
+  &#125;
+&#125;
+export default Reducer
+// src/components/index.js
+import React from &#39;react&#39;
+
+const App = () =&gt; (
+  &lt;div&gt;
+    &lt;h1&gt;hello world!&lt;/h1&gt;
+    &lt;button&gt;Change&lt;/button&gt;
+  &lt;/div&gt;
+)
+export default App
+//src/index.js
+import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import &#123; Provider &#125; from &#39;react-redux&#39;
+import &#123; createStore &#125; from &#39;redux&#39;
+
+import App from &#39;./components/&#39;
+import Reducer from &#39;./reducers/&#39;
+
+const store = createStore(Reducer)
 
 ReactDOM.render(
   &lt;Provider store=&#123;store&#125;&gt;
@@ -200,46 +121,146 @@ ReactDOM.render(
   &lt;/Provider&gt;,
   document.getElementById(&#39;root&#39;)
 )
+console.log(store.getState()) //&#123;title: &quot;Hello world&quot;&#125;
 </code></pre>
-<p>点击 + 号，可以看到我们的 Store 值确实是改变了但是为什么页面没有更新呢？</p>
-<p><img src="https://i.loli.net/2019/03/11/5c85ea783de82.jpg" alt=":(.jpg"></p>
-<h2>订阅更新</h2><p>因为 react 更新需要手动调用 setState，所以我们添加订阅，当调用 actions 更新状态时我们对 connect 进行更新（setState)。</p>
-<pre><code class="javascript">// 对 connect 进行改造
-    componentDidMount() &#123;
-      this.subscribe();
-      this.context.subscribe(() =&gt; this.subscribe()) // 将组建添加到更新队列
-    &#125;
+<h2>connect</h2><p>连接组件与 store</p>
+<pre><code class="js">import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
 
-    componentWillMount()&#123;
-        this.context.unSubscribe(()=&gt;this.subscribe) //取消监听
-    &#125;
-
-    subscribe() &#123;
-      const &#123; state, actions &#125; = this.context
-
-      this.setState(&#123;
-        store: &#123;
-          ..._state(state),
-          ..._actions(actions)
-        &#125;
-      &#125;)
+const App = (props) =&gt; (
+  &lt;div&gt;
+    &#123;console.log(props)&#125;
+    &lt;h1&gt;hello world&lt;/h1&gt;
+    &lt;button&gt;Change&lt;/button&gt;
+  &lt;/div&gt;
+)
+export default connect()(App)
 </code></pre>
-<p>大功告成！至此就实现了一个极其建议的 redux。</p>
-<p><img src="https://i.loli.net/2019/03/11/5c85efdc9b461.png" alt=":).png"></p>
-<p>ref:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/mini-reduxeduxjs/mini-reduxedux/issues/1287">How to choose between Redux’s store and React’s state?</a></li>
-<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012142449">4 张动图解释为什么（什么时候）使用 Redux</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/mini-reduxeduxjs/mini-reduxedux">redux</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/mini-reduxeduxjs/mini-reduxeact-redux">react-redux</a></li>
-</ul>
+<p>如果你打开你的开发者工具控制台，你应该看到一条消息！</p>
+<p>组件现在可以通过 store 的 dispath 函数改变’state’。</p>
+<pre><code class="js">// src/components/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
+
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+    this.props.dispatch(&#123; type: &#39;CHANGE_TITLE&#39;, title: &#39;hello redux&#39; &#125;)
+  &#125;
+  render() &#123;
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;hello world&lt;/h1&gt;
+        &lt;button&gt;Change&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+export default connect()(App)
+</code></pre>
+<p>现在 title 改变了！</p>
+<h2>To change</h2><p>利用 connect 将 state 注入到组件(props)<br>点击按钮，hello world 将变成 hello reducer</p>
+<pre><code class="js">// src/component/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
+
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+  &#125;
+  render() &#123;
+    const &#123; title, dispatch &#125; = this.props
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;&#123;this.props.title&#125;&lt;/h1&gt;
+        &lt;button
+          onClick=&#123;() =&gt;
+            dispatch(&#123; type: &#39;CHANGE_TITLE&#39;, title: &#39;hello redux&#39; &#125;)
+          &#125;
+        &gt;
+          Change
+        &lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+function mapStateToProps(state) &#123;
+  return &#123;
+    title: state.title
+  &#125;
+&#125;
+export default connect(mapStateToProps)(App)
+</code></pre>
+<h2>create action</h2><p>将 action 抽离，并注入到组件(props)中.</p>
+<pre><code class="js">// src/actions/index.js
+export const changeTitle = () =&gt; (&#123;
+  type: &#39;CHANGE_TITLE&#39;,
+  newTitl: &#39;Hello Stark&#39;,
+&#125;)
+export const resetTitle = () =&gt; (&#123;
+  type: &#39;RESET_TITLE&#39;,
+  newTitle: &#39;reset&#39;,
+&#125;)
+
+// src/components/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
+import &#123; bindActionCreators &#125; from &#39;redux&#39;
+import * as action from &#39;../actions/&#39;
+
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+  &#125;
+  render() &#123;
+    const &#123; title, changeTitle, resetTitle &#125; = this.props
+    console.log(this.props)
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;&#123;title&#125;&lt;/h1&gt;
+        &lt;button onClick=&#123;changeTitle&#125;&gt;Change&lt;/button&gt;
+        &lt;button onClick=&#123;resetTitle&#125;&gt;Reset&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+function mapStateToProps(state) &#123;
+  return &#123;
+    title: state.title,
+  &#125;
+&#125;
+function mapActionCreatorsToProps(dispatch) &#123;
+  return bindActionCreators(action, dispatch) //合并多个action
+&#125;
+export default connect(mapStateToProps, mapActionCreatorsToProps)(App)
+// src/reducers/index.js
+const initialState = &#123;
+  title: &#39;Hello world&#39;,
+&#125;
+
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: action.newTitle,
+      &#125;
+    case &#39;RESET_TITLE&#39;:
+      return &#123;
+        title: action.newTitle,
+      &#125;
+    default:
+      return state
+  &#125;
+&#125;
+export default Reducer
+</code></pre>
 
     </div>
 
     
 
     <script>
-        var pub_date = 1552372920000;
+        var pub_date = 1526918400000;
     </script>
 </div>
     <div class="footer"
