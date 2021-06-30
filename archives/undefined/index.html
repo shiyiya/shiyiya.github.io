@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>hello webpack with react - 佚名</title>
+    <title>promise - 佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -30,7 +30,7 @@
 <body id="bodyx" path="archives/undefined/">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">hello webpack with react</h1>
+    <h1 class="post-title">promise</h1>
     <hr>
 
     
@@ -40,125 +40,136 @@
     
 
     <div class="post-content">
-        <p>虽然 React 官方有提供一个 create-react-app 的脚手架，并给出了各种在开发过程中需要的扩展配置文档：比如如果你想用 sass，它会教你怎么做，不知道如何部署，它也告诉你了；甚至还告诉你如何用 prettier 去 lint 代码；但本着折腾的精神，也来小小实现一番。</p>
+        <p>todo</p>
 <span id="more"></span>
 
-<h2>初始化项目</h2><pre><code class="shell">mkdir React-webpack
-cd React-webpack
-yarn init -y
-</code></pre>
-<p>最后一个命令应该已经生成了一个 package.json 文件。这 -y 表示应该使用所有的默认配置。在 package.json 文件中，您可以找到配置，稍后安装节点包和脚本。</p>
-<p>创建主目录</p>
-<pre><code class="shell">mkdir build
-cd build
-</code></pre>
-<p>在 build 目录创建一个 index.html ,内容如下：</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;React &amp; Webpack Demo&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
-    &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>div.root：作为 react 挂载的根节点。<br>bundle.js：为打包后生成的主要文件，即入口。</p>
-<h2>安装 webpack</h2><p>我们将使用 webpack 进行打包，webpack-dev-server 进行开发。</p>
-<p>切换到根目录：<code>yarn add --dev webpack webpack-dev-server</code><br>在根目录添加配置文件 <code>webpack.config.js</code> ：</p>
-<pre><code class="js">const webpack = require(&#39;webpack&#39;)
-const path = require(&#39;path&#39;)
+<pre><code class="javascript">class P &#123;
+  constructor(exector) &#123;
+    if (typeof exector !== &#39;function&#39;)
+      throw TypeError(`Promise resolver $&#123;arguments[0]&#125; is not a function`)
 
-module.exports = &#123;
-  entry: &#39;./src/index.js&#39;,
-  devtool: &#39;inline-source-map&#39;,
-  output: &#123;
-    filename: &#39;bundle.js&#39;,
-    path: path.resolve(__dirname, &#39;build&#39;),
-  &#125;,
-  devServer: &#123;
-    contentBase: &#39;./build&#39;,
-    port: 9000,
-  &#125;,
-&#125;
-</code></pre>
-<p>然后再 package.json 添加一行：</p>
-<pre><code class="json">&quot;start&quot;: &quot;webpack-dev-server --progress --colors --config ./webpack.config.js&quot;
-</code></pre>
-<p>在 src 目录下添加文件 index.js ：</p>
-<pre><code class="js">//src/index.js
-console.log(&#39;hello&#39;)
-</code></pre>
-<p>目录结构：</p>
-<pre><code>- build
-- node_modules
-- src
--- index.js
--- index.html
-- package.json
-- webpack.config.js
-</code></pre>
-<p>我们现在先来试试 webpack 吧！npm start ,打开浏览器输入 localhost:9000 你将看到控制台打印了 hello ，至此 webpack 基本配置完成。</p>
-<h2>安装 babel / 配置 React</h2><p>webpack 不可缺少的 babel ,通过 Babel ，代码将被转换回 ES5，以便每个没有实现所有 ES6 功能的浏览器都可以解释它。babel 甚至更进一步。您不仅可以使用 ES6 功能，还可以使用 ES 的下一代功能。</p>
-<pre><code class="shell">yarn add --dev babel-core babel-loader babel-preset-env
-</code></pre>
-<ul>
-<li>babel-preset-react</li>
-<li>babel-core：babel 核心；</li>
-<li>babel-preset-env：es6 转 es5 ；</li>
-<li>babel-preset-stage-2：使用更多的实验性功能（例如对象扩展） create-react-app 也有用到；</li>
-<li>babel-preset-react：jsx 转 js。</li>
-</ul>
-<p>ok，下面配置 babel，编辑 package.json ，添加：</p>
-<pre><code class="json">&quot;babel&quot;: &#123;
-    &quot;presets&quot;: [
-      &quot;env&quot;,
-      &quot;react&quot;,
-      &quot;stage-2&quot;
-    ]
+    this.status = &#39;pending&#39;
+    this.value = null
+    this.resolveList = []
+    this.rejectList = []
+
+    try &#123;
+      exector(this._resolve.bind(this), this._reject.bind(this))
+    &#125; catch (e) &#123;
+      this._reject(e)
+      throw e
+    &#125;
   &#125;
-</code></pre>
-<p>配置 webpack-loader，编辑 webpack.config.js ,添加：</p>
-<pre><code>module: &#123;
-  rules: [&#123;
-    test: /\.(js|jsx)$/,
-    exclude: /node_modules/,
-    use: [&#39;babel-loader&#39;]
-  &#125;]
+
+  _resolve(value) &#123;
+    if (this.status === &#39;pending&#39;) &#123;
+      this.value = value
+      if (value instanceof P) &#123;
+        value.then(value =&gt; &#123;
+          this.value = value
+        &#125;)
+      &#125;
+      this.status = &#39;fulfilled&#39;
+      setTimeout(() =&gt; &#123;
+        this.resolveList.forEach(resolve =&gt; &#123;
+          resolve(this.value)
+          this.resolveList.shift()
+        &#125;)
+      &#125;, 0)
+    &#125;
+  &#125;
+
+  _reject(value) &#123;
+    // console.log(value)
+    if (this.status === &#39;pending&#39;) &#123;
+      this.status = &#39;rejected&#39;
+      this.value = value
+      this.rejectList.forEach(reject =&gt; &#123;
+        reject(this.value)
+        this.rejectList.shift()
+      &#125;)
+    &#125;
+  &#125;
+
+  then(resolveFn, rejectFn) &#123;
+    resolveFn = typeof resolveFn === &#39;function&#39; ? resolveFn : value =&gt; value
+    rejectFn = typeof rejectFn === &#39;function&#39; ? rejectFn : value =&gt; value
+
+    if (this.status === &#39;fulfilled&#39;) &#123;
+      return new P((resolve, reject) =&gt; &#123;
+        const result = resolveFn(this.value)
+        if (result instanceof P) result.then(resolve, reject)
+        resolve(result)
+      &#125;)
+    &#125;
+
+    if (this.status === &#39;rejected&#39;) &#123;
+      return new P((resolve, reject) =&gt; &#123;
+        const result = rejectFn(this.value)
+        if (result instanceof P) result.then(resolve, reject)
+        reject(result)
+      &#125;)
+    &#125;
+
+    if (this.status === &#39;pending&#39;) &#123;
+      return new P((resolve, reject) =&gt; &#123;
+        this.resolveList.push(() =&gt; &#123;
+          try &#123;
+            const result = resolveFn(this.value)
+            resolve(result)
+          &#125; catch (e) &#123;
+            reject(e)
+          &#125;
+        &#125;)
+
+        this.rejectList.push(() =&gt; &#123;
+          try &#123;
+            const result = rejectFn(this.value)
+            resolve(result)
+          &#125; catch (e) &#123;
+            reject(e)
+          &#125;
+        &#125;)
+      &#125;)
+    &#125;
+  &#125;
+
+  static resolve(value) &#123;
+    if (value instanceof P) return value
+    return new P(resolve =&gt; resolve(value))
+  &#125;
+
+  static reject(value) &#123;
+    return new P((resolve, reject) =&gt; reject(value))
+  &#125;
+
+  catch(rejectFn) &#123;
+    return this.then(undefined, rejectFn)
+  &#125;
 &#125;
-</code></pre>
-<p>现在所有配置已经完成！！</p>
-<p>安装 react 全家桶：yarn add react react-dom<br>更改 src/index.js:</p>
-<pre><code class="js">import React from &#39;react&#39;
-import ReactDOM from &#39;react-dom&#39;
 
-const Hello = () =&gt; &lt;h1&gt;&#39;Hello React、 Webpack&#39;&lt;/h1&gt;
-
-ReactDOM.render(&lt;Hello /&gt;, document.getElementById(&#39;root&#39;))
+new P((resolve, reject) =&gt; &#123;
+  setTimeout(() =&gt; reject(&#39;init&#39;), 1000)
+&#125;)
+  .then(data =&gt; &#123;
+    console.log(data)
+    return &#39;first&#39;
+  &#125;)
+  .then(data =&gt; &#123;
+    console.log(data)
+    return &#39;second&#39;
+  &#125;)
+  .then(data =&gt; &#123;
+    console.log(data)
+  &#125;)```
 </code></pre>
-<p>yarn start，现在刷新浏览器你能看到页面显示 <code>Hello React、 Webpack</code>!</p>
-<h2>配置热加载</h2><p>模块热替换(Hot Module Replacement 或 HMR)是 webpack 提供的最有用的功能之一。它允许在运行时更新各种模块，而无需进行完全刷新。本页面重点介绍实现，而概念页面提供了更多关于它的工作原理以及为什么它有用的细节。<br>配置热加载能大大减少开发时间。<br>安装 <code>yarn add --dev react-hot-loader</code><br>配置 webpack.config.js</p>
-<pre><code class="js">entry: [&#39;react-hot-loader/patch&#39;,&#39;./src/index.js&#39;],
-//修改入口文件
-  devServer: &#123;
-    contentBase: &quot;./build&quot;,
-    port: 9000,
-    hot: true//增加此段
-  &#125;,
-</code></pre>
-<p>更改 src/index.js,在最后添加：</p>
-<pre><code class="js">module.hot.accept()
-</code></pre>
-<p>再次启动 yarn start.<br>当你更改 Hell 组件浏览器将会自动刷新为最新结果。</p>
-<p>Progressive Web App 支持<br>yarn add sw-precache-webpack-plugin webpack-manifest-plugin –dev</p>
 
     </div>
 
     
 
     <script>
-        var pub_date = 1516982400000;
+        var pub_date = 1559145600000;
     </script>
 </div>
     <div class="footer"

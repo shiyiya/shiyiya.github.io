@@ -27,7 +27,7 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="archives/Do-something-interesting-with-JS/">
+<body id="bodyx" path="archives/do-something-interesting-with-JS/">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
     <h1 class="post-title">Do something interesting with JS</h1>
@@ -47,12 +47,12 @@
 <p>visibilitychange 事件</p>
 <p>当用户代理确定顶级浏览上下文包含 的文档的可见性 已更改时， 用户代理必须触发文档上的 visibilitychange 事件 。</p>
 <pre><code class="js">var DefaultTitle = document.title
-document.addEventListener(&#39;visibilitychange&#39;, function() &#123;
+document.addEventListener(&#39;visibilitychange&#39;, function () &#123;
   if (document.hidden) &#123;
     document.title = &#39;你要去哪裏呢~~~&#39;
   &#125; else &#123;
     document.title = &#39;QwQ~~&#39;
-    setTimeout(function() &#123;
+    setTimeout(function () &#123;
       document.title = DefaultTitle
     &#125;, 2000)
   &#125;
@@ -60,7 +60,7 @@ document.addEventListener(&#39;visibilitychange&#39;, function() &#123;
 </code></pre>
 <h2>Copy Or Paste 恶搞</h2><p>利用 Window.getSelection clipboardData.setData</p>
 <p>原理：监听 copy 事件，获取 Copy 内容，操作剪切板并修改剪切板内容。</p>
-<pre><code class="js">document.addEventListener(&#39;copy&#39;, function(e) &#123;
+<pre><code class="js">document.addEventListener(&#39;copy&#39;, function (e) &#123;
   var word = window.getSelection
     ? window.getSelection().toString()
     : document.selection.createRange().text
@@ -83,7 +83,7 @@ function DiyWord(e) &#123;
 //更多有趣的使用姿势自行探索 Ψ(￣ ∀ ￣)Ψ
 </code></pre>
 <h2>自定义 log 输出</h2><pre><code class="js">var _log = console.log
-console.log = function() &#123;
+console.log = function () &#123;
   _log.call(
     console,
     &#39;%c&#39; + [].slice.call(arguments).join(&#39; &#39;),
