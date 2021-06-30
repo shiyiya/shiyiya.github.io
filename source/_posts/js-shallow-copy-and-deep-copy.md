@@ -2,9 +2,10 @@
 title: JS 中的深 & 浅拷贝
 date: 2018-06-30
 update: 2019-10-07 18:27:44
-tags: JS
+tags: [JS]
 photos:
   - https://i.loli.net/2018/09/20/5ba274c04b99f.jpg
+urlname: js-shallow-copy-and-deep-copy
 ---
 
 ## 浅复制和深复制的区别？

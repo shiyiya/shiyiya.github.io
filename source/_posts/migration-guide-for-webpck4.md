@@ -2,9 +2,10 @@
 title: 我的 Webpack（4）升级指南
 date: 2018-09-20
 update: 2019-10-07 17:56:19
-tags: webpck4
+tags: [webpck4]
 photos:
   - https://i.loli.net/2018/09/20/5ba2754ee0772.png
+urlname: migration-guide-for-webpck4
 ---
 
 全新的 webpack（4）来了，带来了全新的特性，更快的性能，更少的配置，先来升级踩波坑吧！

@@ -2,7 +2,8 @@
 title: Do something interesting with JS
 date: 2018-06-30 10:51:10
 update: 2019-10-11 10:51:10
-tags: JS
+tags: [JS]
+urlname: Do-something-interesting-with-JS
 ---
 
 ## 离开和进入页面时改变 title

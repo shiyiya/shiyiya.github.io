@@ -2,9 +2,10 @@
 title: 初探 Progressive Web App
 date: 2019-05-18
 update: 2019-10-05 09:44:35
-tags: pwa
+tags: [pwa]
 photos:
   - https://i.loli.net/2018/09/19/5ba272239cbdf.png
+urlname: pwa-introduction
 ---
 
 ## 它是什么 ？

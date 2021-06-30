@@ -2,7 +2,8 @@
 title: 理解 React-Redux
 date: 2018-05-22
 update: 2019-10-07 18:16:14
-tags: react-redux
+tags: [react-redux]
+urlname: Implementation-of-simple-react-Redux
 ---
 
 Redux 是 JavaScript 状态容器，提供可预测化的状态管理。
