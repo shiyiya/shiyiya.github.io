@@ -54,67 +54,67 @@
 </ul>
 <p>其中基本类型为传值，引用类型（Object）则为引用传递。</p>
 <h2>浅复制 VS 深复制</h2><p>什么是浅复制和深复制。</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> target <span class="token operator">=</span> <span class="token number">1</span> <span class="token comment" spellcheck="true">//原始类型</span>
-<span class="token keyword">var</span> result <span class="token operator">=</span> target1 <span class="token comment" spellcheck="true">//深->值传递</span>
-target <span class="token operator">=</span> <span class="token number">2</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> result<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 1 2</span>
+<pre><code class="javascript">var target = 1 //原始类型
+var result = target1 //深-&gt;值传递
+target = 2
+console.log(target, result) // 1 2
 
-<span class="token comment" spellcheck="true">//浅复制</span>
-<span class="token keyword">var</span> target <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> a<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//Object</span>
-<span class="token keyword">var</span> result <span class="token operator">=</span> target <span class="token comment" spellcheck="true">//浅->引用传递</span>
-target<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">2</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> result<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//&amp;#123;a: 2&amp;#125; &amp;#123;a: 2&amp;#125;</span>
+//浅复制
+var target = &#123; a: 1 &#125; //Object
+var result = target //浅-&gt;引用传递
+target.a = 2
+console.log(target, result) //&#123;a: 2&#125; &#123;a: 2&#125;
 
-<span class="token comment" spellcheck="true">//深复制(基本实现)</span>
-<span class="token keyword">var</span> target <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> a<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> a<span class="token punctuation">:</span> target<span class="token punctuation">.</span>a <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//转化为基本类型 1</span>
-target<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">2</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> result<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//&amp;#123;a: 2&amp;#125; &amp;#123;a: 1&amp;#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2>Object 浅拷贝</h2><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> target <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> a<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> b<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> c<span class="token punctuation">:</span> <span class="token string">'c'</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+//深复制(基本实现)
+var target = &#123; a: 1 &#125;
+var result = &#123; a: target.a &#125; //转化为基本类型 1
+target.a = 2
+console.log(target, result) //&#123;a: 2&#125; &#123;a: 1&#125;
+</code></pre>
+<h2>Object 浅拷贝</h2><pre><code class="javascript">var target = &#123; a: 1, b: &#123; c: &#39;c&#39; &#125; &#125;
 
-<span class="token keyword">var</span> result <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> target<span class="token punctuation">)</span>
-target<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">2</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> result<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">//&amp;#123;a: 2, b: &amp;#123;c:"c"&amp;#125;&amp;#125; &amp;#123;a: 1, b: &amp;#123;c:"c"&amp;#125;&amp;#125;</span>
+var result = Object.assign(&#123;&#125;, target)
+target.a = 2
+console.log(target, result)
+//&#123;a: 2, b: &#123;c:&quot;c&quot;&#125;&#125; &#123;a: 1, b: &#123;c:&quot;c&quot;&#125;&#125;
 
-<span class="token comment" spellcheck="true">//由于 `Object,assign(..)` 是使用 = 进行的赋值操作</span>
-<span class="token comment" spellcheck="true">//当源对象的属性值是指向对象的引用时，也只拷贝引用值。</span>
-target<span class="token punctuation">.</span>b<span class="token punctuation">.</span>c <span class="token operator">=</span> <span class="token number">2</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//&amp;#123;a: 1, b: &amp;#123;c:"c"&amp;#125;&amp;#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2>深拷贝</h2><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">//JSON 安全</span>
-JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">)</span>
+//由于 `Object,assign(..)` 是使用 = 进行的赋值操作
+//当源对象的属性值是指向对象的引用时，也只拷贝引用值。
+target.b.c = 2
+console.log(result) //&#123;a: 1, b: &#123;c:&quot;c&quot;&#125;&#125;
+</code></pre>
+<h2>深拷贝</h2><pre><code class="javascript">//JSON 安全
+JSON.parse(JSON.stringify(target))
 
-<span class="token comment" spellcheck="true">// 递归遍历</span>
-<span class="token keyword">function</span> <span class="token function">deepCopy</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">const</span> _toString <span class="token operator">=</span> Object<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>toString
+// 递归遍历
+function deepCopy(target) &#123;
+  const _toString = Object.prototype.toString
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>target <span class="token operator">||</span> <span class="token keyword">typeof</span> target <span class="token operator">!==</span> <span class="token string">'object'</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//null,undefined,!object</span>
-    <span class="token keyword">return</span> target
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  if (!target || typeof target !== &#39;object&#39;) &#123;
+    //null,undefined,!object
+    return target
+  &#125;
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>_toString<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'[object Date]'</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>target<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  if (_toString.call(target) === &#39;[object Date]&#39;) &#123;
+    return new Date(target.getTime())
+  &#125;
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>_toString<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'[object RegExp]'</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> rules <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    target<span class="token punctuation">.</span>global <span class="token operator">&amp;&amp;</span> rules<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'g'</span><span class="token punctuation">)</span>
-    target<span class="token punctuation">.</span>multiline <span class="token operator">&amp;&amp;</span> rules<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span>
-    target<span class="token punctuation">.</span>ignoreCase <span class="token operator">&amp;&amp;</span> rules<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RegExp</span><span class="token punctuation">(</span>target<span class="token punctuation">.</span>source<span class="token punctuation">,</span> flags<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  if (_toString.call(target) === &#39;[object RegExp]&#39;) &#123;
+    let rules = []
+    target.global &amp;&amp; rules.push(&#39;g&#39;)
+    target.multiline &amp;&amp; rules.push(&#39;m&#39;)
+    target.ignoreCase &amp;&amp; rules.push(&#39;i&#39;)
+    return new RegExp(target.source, flags.join(&#39;&#39;))
+  &#125;
 
-  <span class="token keyword">let</span> result <span class="token operator">=</span> Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  let result = Array.isArray(target) ? [] : &#123;&#125;
 
-  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> target<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">deepCopy</span><span class="token punctuation">(</span>target<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> result
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  for (let key in target) &#123;
+    result[key] = deepCopy(target[key])
+  &#125;
+  return result
+&#125;
+</code></pre>
 
     </div>
 

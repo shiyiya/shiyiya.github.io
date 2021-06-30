@@ -46,54 +46,54 @@
 <h3>Document 接口</h3><p>Document.hidden<br>如果默认视图中的 文件为空，在获取时，该 hidden 属性必须返回 true。<br>document.visibilityState:<br>visibilityState 属性<br>返回当前视图状态，分别为：<br>– hidden<br>– visible<br>– prerender<br>– unloaded</p>
 <p>visibilitychange 事件</p>
 <p>当用户代理确定顶级浏览上下文包含 的文档的可见性 已更改时， 用户代理必须触发文档上的 visibilitychange 事件 。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> DefaultTitle <span class="token operator">=</span> document<span class="token punctuation">.</span>title
-document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'visibilitychange'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>document<span class="token punctuation">.</span>hidden<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    document<span class="token punctuation">.</span>title <span class="token operator">=</span> <span class="token string">'你要去哪裏呢~~~'</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    document<span class="token punctuation">.</span>title <span class="token operator">=</span> <span class="token string">'QwQ~~'</span>
-    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      document<span class="token punctuation">.</span>title <span class="token operator">=</span> DefaultTitle
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="js">var DefaultTitle = document.title
+document.addEventListener(&#39;visibilitychange&#39;, function() &#123;
+  if (document.hidden) &#123;
+    document.title = &#39;你要去哪裏呢~~~&#39;
+  &#125; else &#123;
+    document.title = &#39;QwQ~~&#39;
+    setTimeout(function() &#123;
+      document.title = DefaultTitle
+    &#125;, 2000)
+  &#125;
+&#125;)
+</code></pre>
 <h2>Copy Or Paste 恶搞</h2><p>利用 Window.getSelection clipboardData.setData</p>
 <p>原理：监听 copy 事件，获取 Copy 内容，操作剪切板并修改剪切板内容。</p>
-<pre class="line-numbers language-js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'copy'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">var</span> word <span class="token operator">=</span> window<span class="token punctuation">.</span>getSelection
-    <span class="token operator">?</span> window<span class="token punctuation">.</span><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">:</span> document<span class="token punctuation">.</span>selection<span class="token punctuation">.</span><span class="token function">createRange</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>text
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>word<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token function">DiyWord</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'商业转载请联系作者获得授权，非商业转载请注明出处，谢谢合作。'</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span class="token keyword">function</span> <span class="token function">DiyWord</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">var</span> clipboardData <span class="token operator">=</span> e<span class="token punctuation">.</span>clipboardData <span class="token operator">||</span> window<span class="token punctuation">.</span>clipboardData
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>clipboardData<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true">//window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();</span>
-    <span class="token keyword">var</span> Hello <span class="token operator">=</span>
-      <span class="token string">'商业转载请联系作者获得授权，非商业转载请注明出处，谢谢合作。 ->此为粘贴'</span>
-    <span class="token comment" spellcheck="true">//clipboardData.setData('text/html', Hello);</span>
-    clipboardData<span class="token punctuation">.</span><span class="token function">setData</span><span class="token punctuation">(</span><span class="token string">'text/plain'</span><span class="token punctuation">,</span> Hello<span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//更多有趣的使用姿势自行探索 Ψ(￣ ∀ ￣)Ψ</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2>自定义 log 输出</h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> _log <span class="token operator">=</span> console<span class="token punctuation">.</span>log
-console<span class="token punctuation">.</span>log <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  _log<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>
-    console<span class="token punctuation">,</span>
-    <span class="token string">'%c'</span> <span class="token operator">+</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token string">'color:transparent;text-shadow:0 0 14px rgba(0,0,0,.8);'</span>
-  <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
-  <span class="token string">'                                       .. .vr       \n                                     qBMBBBMBMY     \n                                    8BBBBBOBMBMv    \n                                  iMBMM5vOY:BMBBv    \n                  .r,             OBM;   .: rBBBBBY   \n                  vUL             7BB   .;7. LBMMBBM.  \n                 .@Wwz.           :uvir .i:.iLMOMOBM..  \n                  vv::r;             iY. ...rv,@arqiao. \n                   Li. i:             v:.::::7vOBBMBL.. \n                   ,i7: vSUi,         :M7.:.,:u08OP. .  \n                     .N2k5u1ju7,..     BMGiiL7   ,i,i.  \n                      :rLjFYjvjLY7r::.  ;v  vr... rE8q;.:,, \n                     751jSLXPFu5uU@guohezou.,1vjY2E8@Yizero. \n                     BB:FMu rkM8Eq0PFjF15FZ0Xu15F25uuLuu25Gi.   \n                   ivSvvXL    :v58ZOGZXF2UUkFSFkU1u125uUJUUZ,   \n                 :@kevensun.      ,iY20GOXSUXkSuS2F5XXkUX5SEv.  \n             .:i0BMBMBBOOBMUi;,        ,;8PkFP5NkPXkFqPEqqkZu.  \n           .rqMqBBMOMMBMBBBM .           @kexianli.S11kFSU5q5   \n         .7BBOi1L1MM8BBBOMBB..,          8kqS52XkkU1Uqkk1kUEJ   \n         .;MBZ;iiMBMBMMOBBBu ,           1OkS1F1X5kPP112F51kU   \n           .rPY  OMBMBBBMBB2 ,.          rME5SSSFk1XPqFNkSUPZ,.\n                  ;;JuBML::r:.:.,,        SZPX0SXSP5kXGNP15UBr.\n                      L,    :@huhao.      :MNZqNXqSqXk2E0PSXPE .\n                  viLBX.,,v8Bj. i:r7:,     2Zkqq0XXSNN0NOXXSXOU \n                :r2. rMBGBMGi .7Y, 1i::i   vO0PMNNSXXEqP@Secbone.\n                .i1r. .jkY,    vE. iY....  20Fq0q5X5F1S2F22uuv1M; \n        '</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="js">document.addEventListener(&#39;copy&#39;, function(e) &#123;
+  var word = window.getSelection
+    ? window.getSelection().toString()
+    : document.selection.createRange().text
+  if (word.length &gt; 1) &#123;
+    DiyWord(e)
+    console.log(&#39;商业转载请联系作者获得授权，非商业转载请注明出处，谢谢合作。&#39;)
+  &#125;
+&#125;)
+function DiyWord(e) &#123;
+  var clipboardData = e.clipboardData || window.clipboardData
+  if (clipboardData) &#123;
+    event.preventDefault()
+    //window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+    var Hello =
+      &#39;商业转载请联系作者获得授权，非商业转载请注明出处，谢谢合作。 -&gt;此为粘贴&#39;
+    //clipboardData.setData(&#39;text/html&#39;, Hello);
+    clipboardData.setData(&#39;text/plain&#39;, Hello)
+  &#125;
+&#125;
+//更多有趣的使用姿势自行探索 Ψ(￣ ∀ ￣)Ψ
+</code></pre>
+<h2>自定义 log 输出</h2><pre><code class="js">var _log = console.log
+console.log = function() &#123;
+  _log.call(
+    console,
+    &#39;%c&#39; + [].slice.call(arguments).join(&#39; &#39;),
+    &#39;color:transparent;text-shadow:0 0 14px rgba(0,0,0,.8);&#39;
+  )
+&#125;
+console.log(
+  &#39;                                       .. .vr       \n                                     qBMBBBMBMY     \n                                    8BBBBBOBMBMv    \n                                  iMBMM5vOY:BMBBv    \n                  .r,             OBM;   .: rBBBBBY   \n                  vUL             7BB   .;7. LBMMBBM.  \n                 .@Wwz.           :uvir .i:.iLMOMOBM..  \n                  vv::r;             iY. ...rv,@arqiao. \n                   Li. i:             v:.::::7vOBBMBL.. \n                   ,i7: vSUi,         :M7.:.,:u08OP. .  \n                     .N2k5u1ju7,..     BMGiiL7   ,i,i.  \n                      :rLjFYjvjLY7r::.  ;v  vr... rE8q;.:,, \n                     751jSLXPFu5uU@guohezou.,1vjY2E8@Yizero. \n                     BB:FMu rkM8Eq0PFjF15FZ0Xu15F25uuLuu25Gi.   \n                   ivSvvXL    :v58ZOGZXF2UUkFSFkU1u125uUJUUZ,   \n                 :@kevensun.      ,iY20GOXSUXkSuS2F5XXkUX5SEv.  \n             .:i0BMBMBBOOBMUi;,        ,;8PkFP5NkPXkFqPEqqkZu.  \n           .rqMqBBMOMMBMBBBM .           @kexianli.S11kFSU5q5   \n         .7BBOi1L1MM8BBBOMBB..,          8kqS52XkkU1Uqkk1kUEJ   \n         .;MBZ;iiMBMBMMOBBBu ,           1OkS1F1X5kPP112F51kU   \n           .rPY  OMBMBBBMBB2 ,.          rME5SSSFk1XPqFNkSUPZ,.\n                  ;;JuBML::r:.:.,,        SZPX0SXSP5kXGNP15UBr.\n                      L,    :@huhao.      :MNZqNXqSqXk2E0PSXPE .\n                  viLBX.,,v8Bj. i:r7:,     2Zkqq0XXSNN0NOXXSXOU \n                :r2. rMBGBMGi .7Y, 1i::i   vO0PMNNSXXEqP@Secbone.\n                .i1r. .jkY,    vE. iY....  20Fq0q5X5F1S2F22uuv1M; \n        &#39;
+)
+</code></pre>
 <p>todo more</p>
 
     </div>

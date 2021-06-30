@@ -55,115 +55,115 @@
 <p>大概为了实现面向对象引入了原型链等。</p>
 <h2>继承</h2><p>在此之前，先看一下 mdn 上 new 的解释：</p>
 <p>当代码 new Foo(…) 执行时，会发生以下事情：<br><strong>一个继承自 Foo.prototype 的新对象被创建</strong>。<br>使用指定的参数调用构造函数 Foo ，并将 this 绑定到新创建的对象。new Foo 等同于 new Foo()，也就是没有指定参数列表，Foo 不带任何参数调用的情况。<br>由构造函数返回的对象就是 new 表达式的结果。如果构造函数没有显式返回一个对象，则使用步骤 1 创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤</p>
-<h2>继承的几种方法</h2><h3>原型链继承</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'Parent'</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<h2>继承的几种方法</h2><h3>原型链继承</h3><pre><code class="javascript">function Parent() &#123;
+  this.name = &#39;Parent&#39;
+  this.children = []
+&#125;
 
-Parent<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>getAttr <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>children<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+Parent.prototype.getAttr = function () &#123;
+  console.log(this.name, this.children)
+&#125;
 
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-Child<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+function Child() &#123;&#125;
+Child.prototype = new Parent()
 
-<span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+var instance = new Child()
 
-instance<span class="token punctuation">.</span>constructor <span class="token operator">==</span> Parent <span class="token comment" spellcheck="true">//true</span>
-instance<span class="token punctuation">.</span><span class="token function">getAttr</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//Parent []</span>
+instance.constructor == Parent //true
+instance.getAttr() //Parent []
 
-<span class="token comment" spellcheck="true">//此时所有引用实例共享属性(弊端)</span>
-<span class="token keyword">var</span> instance2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-instance<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'instance'</span>
-instance<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'instance'</span><span class="token punctuation">)</span>
+//此时所有引用实例共享属性(弊端)
+var instance2 = new Child()
+instance.name = &#39;instance&#39;
+instance.children.push(&#39;instance&#39;)
 
-child2<span class="token punctuation">.</span><span class="token function">getAttr</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//Parent ["instance"]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+child2.getAttr() //Parent [&quot;instance&quot;]
+</code></pre>
 <h3>借用构造函数</h3><p>此方法是使用 call 或者 apply 方法，将父类的构造函数 this 绑定到子类上，当实例化子类式调用父类构造函数并绑定 this。所以每个实例都有自己的一份拷贝。</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'Parent'</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<pre><code class="javascript">function Parent() &#123;
+  this.name = &#39;Parent&#39;
+  this.children = []
 
-  <span class="token comment" spellcheck="true">// 此时方法也需在父类构造函数中声明，每次都会生成一个全新的 func</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>getAttr <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  // 此时方法也需在父类构造函数中声明，每次都会生成一个全新的 func
+  this.getAttr = function () &#123;&#125;
+&#125;
 
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  Parent<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+function Child() &#123;
+  Parent.call(this)
+&#125;
 
-<span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">var</span> instance2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+var instance = new Child()
+var instance2 = new Child()
 
-instance<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'instance1'</span><span class="token punctuation">)</span>
-instance2<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'instance2'</span><span class="token punctuation">)</span>
+instance.children.push(&#39;instance1&#39;)
+instance2.children.push(&#39;instance2&#39;)
 
-<span class="token comment" spellcheck="true">//["instance1"] ["instance2"]</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>instance<span class="token punctuation">.</span>children<span class="token punctuation">,</span> instance2<span class="token punctuation">.</span>children<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3>组合继承</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'Parent'</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+//[&quot;instance1&quot;] [&quot;instance2&quot;]
+console.log(instance.children, instance2.children)
+</code></pre>
+<h3>组合继承</h3><pre><code class="javascript">function Parent() &#123;
+  this.name = &#39;Parent&#39;
+  this.children = []
 
-  <span class="token comment" spellcheck="true">// 此时方法也需在父类构造函数中声明</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>getAttr <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  // 此时方法也需在父类构造函数中声明
+  this.getAttr = function () &#123;&#125;
+&#125;
 
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  Parent<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+function Child() &#123;
+  Parent.call(this)
+&#125;
 
-<span class="token comment" spellcheck="true">// 直接继承公共方方法</span>
-Child<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+// 直接继承公共方方法
+Child.prototype = new Parent()
 
-<span class="token comment" spellcheck="true">// 修成原型链</span>
-Child<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> Child
+// 修成原型链
+Child.prototype.constructor = Child
 
-<span class="token comment" spellcheck="true">// 此时继承自 Child.prototype 的新对象被创建</span>
-<span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">var</span> instance2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+// 此时继承自 Child.prototype 的新对象被创建
+var instance = new Child()
+var instance2 = new Child()
 
-instance<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'instance1'</span><span class="token punctuation">)</span>
-instance2<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'instance2'</span><span class="token punctuation">)</span>
+instance.children.push(&#39;instance1&#39;)
+instance2.children.push(&#39;instance2&#39;)
 
-<span class="token comment" spellcheck="true">//["instance1"] ["instance2"]</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>instance<span class="token punctuation">.</span>children<span class="token punctuation">,</span> instance2<span class="token punctuation">.</span>children<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3>寄生继承</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'Parent'</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+//[&quot;instance1&quot;] [&quot;instance2&quot;]
+console.log(instance.children, instance2.children)
+</code></pre>
+<h3>寄生继承</h3><pre><code class="javascript">function Parent() &#123;
+  this.name = &#39;Parent&#39;
+  this.children = []
+&#125;
 
-<span class="token keyword">var</span> instance <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Parent<span class="token punctuation">)</span>
-寄生 <span class="token operator">+</span> 组合
-<span class="token keyword">function</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'Parent'</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+var instance = Object.create(Parent)
+寄生 + 组合
+function Parent() &#123;
+  this.name = &#39;Parent&#39;
+  this.children = []
+&#125;
 
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  Parent<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+function Child() &#123;
+  Parent.call(this)
+&#125;
 
-<span class="token keyword">var</span> prototype <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Parent<span class="token punctuation">)</span>
+var prototype = Object.create(Parent)
 
-<span class="token comment" spellcheck="true">//继承原型</span>
-prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> Child
-Child<span class="token punctuation">.</span>prototype <span class="token operator">=</span> prototype
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+//继承原型
+prototype.constructor = Child
+Child.prototype = prototype
+</code></pre>
 <h3>ES6 中的继承</h3><p>class Child extend Parent{}</p>
 <h3>ES6 多继承</h3><ul>
 <li>mixins</li>
 </ul>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">mixins</span><span class="token punctuation">(</span>derivedCtor<span class="token punctuation">,</span> baseCtors<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  baseCtors<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>baseCtor<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    Object<span class="token punctuation">.</span><span class="token function">getOwnPropertyNames</span><span class="token punctuation">(</span>baseCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      derivedCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> baseCtor<span class="token punctuation">.</span>prototype<span class="token punctuation">[</span>name<span class="token punctuation">]</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token function">mixins</span><span class="token punctuation">(</span>child<span class="token punctuation">,</span> <span class="token punctuation">[</span>parent<span class="token punctuation">,</span> <span class="token operator">...</span>other<span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="javascript">function mixins(derivedCtor, baseCtors) &#123;
+  baseCtors.forEach((baseCtor) =&gt; &#123;
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) =&gt; &#123;
+      derivedCtor.prototype[name] = baseCtor.prototype[name]
+    &#125;)
+  &#125;)
+&#125;
+mixins(child, [parent, ...other])
+</code></pre>
 
     </div>
 

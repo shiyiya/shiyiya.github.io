@@ -51,36 +51,36 @@
 
 <h2>创建 Web App Manifest</h2><p>PWA 添加至桌面的功能实现依赖于 manifest.json，所以我们首先来创建它。</p>
 <p>用于添加到桌面的描述等，提升 PWA 从主屏幕启动时的应用体验。<br>如：</p>
-<pre class="line-numbers language-json"><code class="language-json">&amp;#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token property">"short_name"</span><span class="token operator">:</span> <span class="token string">"短名称"</span><span class="token punctuation">,</span> //用于主屏幕显示
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"这是一个完整名称"</span><span class="token punctuation">,</span> //用于安装横幅显示
-  <span class="token property">"background_color"</span><span class="token operator">:</span> <span class="token string">"#0000ff"</span><span class="token punctuation">,</span> //启动背景颜色
-  <span class="token property">"display"</span><span class="token operator">:</span> <span class="token string">"standalone"</span><span class="token punctuation">,</span> //启动显示类型
-  <span class="token property">"theme_color"</span><span class="token operator">:</span> <span class="token string">"blue"</span><span class="token punctuation">,</span> //主题颜色<span class="token punctuation">,</span> 启动画面上状态栏、内容页中状态栏、地址栏的颜色，会被 theme_color 所影响。
-  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token property">"src"</span><span class="token operator">:</span> <span class="token string">"images/icon/icon-48.png"</span><span class="token punctuation">,</span>
-      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"image/png"</span><span class="token punctuation">,</span>
-      <span class="token property">"sizes"</span><span class="token operator">:</span> <span class="token string">"48x48"</span>
-    &amp;#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token property">"src"</span><span class="token operator">:</span> <span class="token string">"images/icon/icon-64.png"</span><span class="token punctuation">,</span>
-      <span class="token property">"sizes"</span><span class="token operator">:</span> <span class="token string">"64x64"</span>
-    &amp;#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token property">"src"</span><span class="token operator">:</span> <span class="token string">"images/icon/icon-114.png"</span><span class="token punctuation">,</span>
-      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"image/png"</span><span class="token punctuation">,</span>
-      <span class="token property">"sizes"</span><span class="token operator">:</span> <span class="token string">"114x114"</span>
-    &amp;#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    &amp;#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token property">"src"</span><span class="token operator">:</span> <span class="token string">"images/icon/icon-128.png"</span><span class="token punctuation">,</span>
-      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"image/png"</span><span class="token punctuation">,</span>
-      <span class="token property">"sizes"</span><span class="token operator">:</span> <span class="token string">"128x128"</span>
-    &amp;#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"start_url"</span><span class="token operator">:</span> <span class="token string">"/?from=pwa"</span>
-&amp;#<span class="token number">125</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="json">&#123;
+  &quot;short_name&quot;: &quot;短名称&quot;, //用于主屏幕显示
+  &quot;name&quot;: &quot;这是一个完整名称&quot;, //用于安装横幅显示
+  &quot;background_color&quot;: &quot;#0000ff&quot;, //启动背景颜色
+  &quot;display&quot;: &quot;standalone&quot;, //启动显示类型
+  &quot;theme_color&quot;: &quot;blue&quot;, //主题颜色, 启动画面上状态栏、内容页中状态栏、地址栏的颜色，会被 theme_color 所影响。
+  &quot;icons&quot;: [
+    &#123;
+      &quot;src&quot;: &quot;images/icon/icon-48.png&quot;,
+      &quot;type&quot;: &quot;image/png&quot;,
+      &quot;sizes&quot;: &quot;48x48&quot;
+    &#125;,
+    &#123;
+      &quot;src&quot;: &quot;images/icon/icon-64.png&quot;,
+      &quot;sizes&quot;: &quot;64x64&quot;
+    &#125;,
+    &#123;
+      &quot;src&quot;: &quot;images/icon/icon-114.png&quot;,
+      &quot;type&quot;: &quot;image/png&quot;,
+      &quot;sizes&quot;: &quot;114x114&quot;
+    &#125;,
+    &#123;
+      &quot;src&quot;: &quot;images/icon/icon-128.png&quot;,
+      &quot;type&quot;: &quot;image/png&quot;,
+      &quot;sizes&quot;: &quot;128x128&quot;
+    &#125;
+  ],
+  &quot;start_url&quot;: &quot;/?from=pwa&quot;
+&#125;
+</code></pre>
 <p>应用安装提醒<br>浏览器在 PWA 站点满足以下条件时会自动显示横幅，提醒你将站点添加到桌面：</p>
 <ul>
 <li><p>站点部署 manifest.json，该文件需配置如下属性：</p>
@@ -102,114 +102,114 @@
 </li>
 </ul>
 <h3>判断用户是否安装此应用</h3><p>beforeinstallprompt 事件返回一个名为 userChoice 的 Promise 对象，并在当用户对横幅进行操作时进行解析。promise 会返回属性 outcome，该属性的值为 dismissed 或 accepted，如果用户将网页添加到主屏幕，则返回 accepted。</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'beforeinstallprompt'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  e<span class="token punctuation">.</span>userChoice<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>choiceResult<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>choiceResult<span class="token punctuation">.</span>outcome <span class="token operator">===</span> <span class="token string">'dismissed'</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'用户取消安装应用'</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'用户安装了应用'</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="javascript">window.addEventListener(&#39;beforeinstallprompt&#39;, function (e) &#123;
+  e.userChoice.then(function (choiceResult) &#123;
+    if (choiceResult.outcome === &#39;dismissed&#39;) &#123;
+      console.log(&#39;用户取消安装应用&#39;)
+    &#125; else &#123;
+      console.log(&#39;用户安装了应用&#39;)
+    &#125;
+  &#125;)
+&#125;)
+</code></pre>
 <h2>添加离线缓存</h2><p>PWA 主要解决的就是离线访问，即使再没网的情况下也能查看之前访问过的资源，实现这些功能可以使用 indexDB，service worker，localstorage 等，下面我们使用 SW 实现。</p>
 <h2>什么是 Service Worker</h2><p>基于 Cache API 实现，主要用来做持久的离线缓存。在你首次访问网站，将部分资源离线缓存，在你网络不好或者无网状态下将会加载这些缓存资源。</p>
-<h2>注册 Service Worker</h2><pre class="line-numbers language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'serviceWorker'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      navigator<span class="token punctuation">.</span>serviceWorker
-        <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">'sw.js'</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> scope<span class="token punctuation">:</span> <span class="token string">'/'</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>reg<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Registration succeeded. Scope is '</span> <span class="token operator">+</span> reg<span class="token punctuation">.</span>scope<span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Registration failed with '</span> <span class="token operator">+</span> error<span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2>注册 Service Worker</h2><pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;&lt;/body&gt;
+  &lt;script&gt;
+    if (&#39;serviceWorker&#39; in navigator) &#123;
+      navigator.serviceWorker
+        .register(&#39;sw.js&#39;, &#123; scope: &#39;/&#39; &#125;)
+        .then(function (reg) &#123;
+          console.log(&#39;Registration succeeded. Scope is &#39; + reg.scope)
+        &#125;)
+        .catch(function (error) &#123;
+          console.log(&#39;Registration failed with &#39; + error)
+        &#125;)
+    &#125;
+  &lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
 <p>注册成功后在控制台 Application -&gt; Service Workers 将看到：<br>在你的 service worker 注册之后，浏览器会尝试为你的页面或站点安装并激活它。</p>
 <h2>Service Worker 编写</h2><p>service worker 主要有三个事件： install，activate 和 fetch。</p>
 <h3>Install</h3><p>install： 这个状态发生在 Service Worker 注册之后，表示开始安装，触发 install 事件回调指定一些静态资源进行离线缓存<br>添加 sw.js ,缓存网站静资源：</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">const</span> cacheVersion <span class="token operator">=</span> <span class="token string">'2018518'</span>
-<span class="token keyword">const</span> staticeCacheName <span class="token operator">=</span> <span class="token string">'static'</span> <span class="token operator">+</span> cacheVersion <span class="token comment" spellcheck="true">//缓存版本（分组）</span>
-<span class="token keyword">const</span> cacheList <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token comment" spellcheck="true">//缓存列表</span>
-  <span class="token string">'/'</span><span class="token punctuation">,</span>
-  <span class="token string">'img.png'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span>
-self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'install'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'service worker: install'</span><span class="token punctuation">)</span>
-  event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span>
-    <span class="token comment" spellcheck="true">//确保以下执行后完成 sw 安装。</span>
+<pre><code class="javascript">const cacheVersion = &#39;2018518&#39;
+const staticeCacheName = &#39;static&#39; + cacheVersion //缓存版本（分组）
+const cacheList = [
+  //缓存列表
+  &#39;/&#39;,
+  &#39;img.png&#39;,
+]
+self.addEventListener(&#39;install&#39;, function (event) &#123;
+  console.log(&#39;service worker: install&#39;)
+  event.waitUntil(
+    //确保以下执行后完成 sw 安装。
     caches
-      <span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>staticeCacheName<span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>cache<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> cache<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>cacheList<span class="token punctuation">)</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> self<span class="token punctuation">.</span><span class="token function">skipWaiting</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//安装阶段跳过等待，直接进入 active, 保证每次 /sw.js</span>
-  <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      .open(staticeCacheName)
+      .then(function (cache) &#123;
+        return cache.addAll(cacheList)
+      &#125;)
+      .then(() =&gt; self.skipWaiting()) //安装阶段跳过等待，直接进入 active, 保证每次 /sw.js
+  )
+&#125;)
+</code></pre>
 <ul>
 <li>event.waitUntil：执行完内部代码（缓存资源），进行 sw 安装。</li>
 <li>caches.open：添加缓存版本（组）。</li>
 </ul>
 <p>刷新页面，你见看到资源已经被缓存。</p>
 <h3>activate</h3><p>当 install 完成后， service worker 进入 active 状态，这个事件立刻执行。如果你的 service worker 已经被安装，但是刷新页面时有一个新版本的可用，新版的 service worker 会在后台安装，但是还没激活。这时候就需要删除旧版本的缓存并注册新的 sw 。</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'activate'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'service worker: activate'</span><span class="token punctuation">)</span>
-  <span class="token keyword">const</span> newCaches <span class="token operator">=</span> <span class="token string">'newCaches'</span>
-  event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span>
-    self<span class="token punctuation">.</span>clients<span class="token punctuation">.</span><span class="token function">claim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//更新客户端</span>
-    caches<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>keyList<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>
-        keyList<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          <span class="token keyword">if</span> <span class="token punctuation">(</span>newCaches<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token keyword">delete</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
-          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-      <span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="javascript">self.addEventListener(&#39;activate&#39;, function (event) &#123;
+  console.log(&#39;service worker: activate&#39;)
+  const newCaches = &#39;newCaches&#39;
+  event.waitUntil(
+    self.clients.claim(), //更新客户端
+    caches.keys().then(function (keyList) &#123;
+      return Promise.all(
+        keyList.map(function (key) &#123;
+          if (newCaches.indexOf(key) === -1) &#123;
+            return caches.delete(key)
+          &#125;
+        &#125;)
+      )
+    &#125;)
+  )
+&#125;)
+</code></pre>
 <h3>fetch</h3><p>每次任何被 service worker 控制的资源被请求到时，都会触发 fetch 事件，这些资源包括了指定的 scope 内的文档，和这些文档内引用的其他任何资源（比如 index.html 发起了一个跨域的请求来嵌入一个图片，这个也会通过 service worker 。<br>我们可以利用它来进行监听 http 请求，更改内容。</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'fetch'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'service worker: fetch'</span><span class="token punctuation">)</span>
-  event<span class="token punctuation">.</span><span class="token function">respondWith</span><span class="token punctuation">(</span>
+<pre><code class="javascript">self.addEventListener(&#39;fetch&#39;, function (event) &#123;
+  console.log(&#39;service worker: fetch&#39;)
+  event.respondWith(
     caches
-      <span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>resp<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">.</span>url <span class="token operator">=</span> <span class="token string">'xxxxx'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          <span class="token comment" spellcheck="true">//doSomeThing</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>
-          resp <span class="token operator">||</span>
-          <span class="token function">fetch</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//↑ 如果缓存有直接返回，否则发起网络请求</span>
-            <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'fetch'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>cache<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-              <span class="token comment" spellcheck="true">//↑ 创建新本，缓存新的请求资源</span>
-              <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">.</span>url<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">'http'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">//排除 Chrome 扩展</span>
-                cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">,</span> response<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//将新的新的请求资源推入缓存</span>
-                <span class="token keyword">return</span> response
-              <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                <span class="token keyword">return</span> response
-              <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token string">'/error.html'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//没有缓存并且请求错误</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      .match(event.request)
+      .then(function (resp) &#123;
+        if ((event.request.url = &#39;xxxxx&#39;)) &#123;
+          //doSomeThing
+        &#125;
+        return (
+          resp ||
+          fetch(event.request).then(function (response) &#123;
+            //↑ 如果缓存有直接返回，否则发起网络请求
+            return caches.open(&#39;fetch&#39;).then(function (cache) &#123;
+              //↑ 创建新本，缓存新的请求资源
+              if (!(event.request.url.indexOf(&#39;http&#39;) === -1)) &#123;
+                //排除 Chrome 扩展
+                cache.put(event.request, response.clone()) //将新的新的请求资源推入缓存
+                return response
+              &#125; else &#123;
+                return response
+              &#125;
+            &#125;)
+          &#125;)
+        )
+      &#125;)
+      .catch(function () &#123;
+        return caches.match(&#39;/error.html&#39;) //没有缓存并且请求错误
+      &#125;)
+  )
+&#125;)
+</code></pre>
 <h2>大公告成</h2><p>你可以尝试将本站点添加至桌面即可看到效果。</p>
 
     </div>

@@ -44,83 +44,83 @@
 <span id="more"></span>
 
 <h2>升级 webpack</h2><p>直接卸载重装最新！</p>
-<pre class="line-numbers language-shell"><code class="language-shell">yarn remove webpack webpack-dev-server
+<pre><code class="shell">yarn remove webpack webpack-dev-server
 yarn add webpack webpack-cli
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</code></pre>
 <p>webpack 4 必须安装 CLI</p>
 <p>官方的介绍是这样的：<br>不安装将会报 error。</p>
 <h2>修改配置</h2><h3>添加 mode</h3><p>webpack 默认提供 mode 选项<br>值为 development(开发环境) || production(生产环境)<br>不需要自行判断是生产环境还是开发环境，直接在配置下增加字段。<br>development：默认启用 热加载/缓存 等。<br>production： 默认启用代码压缩等功能。<br><code>mode: development || production</code></p>
-<h3>CommonsChunkPlugin 的弃用</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// webpack3</span>
-<span class="token keyword">new</span> <span class="token class-name">webpack<span class="token punctuation">.</span>optimize<span class="token punctuation">.</span>CommonsChunkPlugin</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      names<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'common'</span><span class="token punctuation">,</span><span class="token string">'vendor'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      filename<span class="token punctuation">:</span> <span class="token string">'./common/[name].bundle.js'</span><span class="token punctuation">,</span>
-      minChunks<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<h3>CommonsChunkPlugin 的弃用</h3><pre><code class="js">// webpack3
+new webpack.optimize.CommonsChunkPlugin(&#123;
+      names: [&#39;common&#39;,&#39;vendor&#39;],
+      filename: &#39;./common/[name].bundle.js&#39;,
+      minChunks: 2,
+  &#125;)
 
-<span class="token comment" spellcheck="true">// webpack4</span>
-  optimization<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    minimize<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    splitChunks<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      maxAsyncRequests<span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
-      maxInitialRequests<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
-      minChunks<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-      cacheGroups<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">default</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-        commons<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          filename<span class="token punctuation">:</span> <span class="token string">'./commons/[name].[hash:8].js'</span><span class="token punctuation">,</span>
-          name<span class="token punctuation">:</span> <span class="token string">"commons"</span><span class="token punctuation">,</span>
-          chunks<span class="token punctuation">:</span> <span class="token string">"initial"</span><span class="token punctuation">,</span>
-          minChunks<span class="token punctuation">:</span> <span class="token number">2</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      vendor<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        test<span class="token punctuation">:</span> <span class="token regex">/node_modules/</span><span class="token punctuation">,</span>
-        filename<span class="token punctuation">:</span> <span class="token string">'./vendor/[name].[hash:8].js'</span><span class="token punctuation">,</span>
-        name<span class="token punctuation">:</span> <span class="token string">"vendor"</span><span class="token punctuation">,</span>
-        chunks<span class="token punctuation">:</span> <span class="token string">"initial"</span><span class="token punctuation">,</span>
-        minChunks<span class="token punctuation">:</span> <span class="token number">1</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+// webpack4
+  optimization: &#123;
+    minimize: true,
+    splitChunks: &#123;
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      minChunks: 2,
+      cacheGroups: &#123;
+        default: false,
+        commons: &#123;
+          filename: &#39;./commons/[name].[hash:8].js&#39;,
+          name: &quot;commons&quot;,
+          chunks: &quot;initial&quot;,
+          minChunks: 2
+        &#125;,
+      vendor: &#123;
+        test: /node_modules/,
+        filename: &#39;./vendor/[name].[hash:8].js&#39;,
+        name: &quot;vendor&quot;,
+        chunks: &quot;initial&quot;,
+        minChunks: 1
+      &#125;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <h3>extract-text-webpack-plugin 将不再支持</h3><p>改用 MiniCssExtractPlugin 这个插件,具体内如可查看官方 Issue 。</p>
 <pre><code>yarn add mini-css-extract-plugin
 </code></pre>
 <p>配置如下：</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> MiniCssExtractPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mini-css-extract-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre><code class="js">const MiniCssExtractPlugin = require(&quot;mini-css-extract-plugin&quot;);
 
-plugins<span class="token punctuation">:</span><span class="token punctuation">[</span>
-  <span class="token operator">...</span>
-  <span class="token keyword">new</span> <span class="token class-name">MiniCssExtractPlugin</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        filename<span class="token punctuation">:</span> <span class="token string">"./css/[name].[hash:8].css"</span><span class="token punctuation">,</span>
-        <span class="token comment" spellcheck="true">//chunkFilename: "[name].css"</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span class="token punctuation">]</span>
-<span class="token operator">...</span><span class="token punctuation">.</span>
-modules<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token operator">...</span><span class="token punctuation">.</span>
-  rules<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    test<span class="token punctuation">:</span> <span class="token regex">/\.css$/</span><span class="token punctuation">,</span>
-    use<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      loader<span class="token punctuation">:</span> MiniCssExtractPlugin<span class="token punctuation">.</span>loader<span class="token punctuation">,</span>
-      options<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//因为上面设置了 /css/ 目录</span>
-        <span class="token comment" spellcheck="true">//Issue：https://github.com/webpack-contrib/mini-css-extract-plugin/issues/44#issuecomment-379059788</span>
-        publicPath<span class="token punctuation">:</span> <span class="token string">'../'</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      loader<span class="token punctuation">:</span> <span class="token string">'css-loader'</span><span class="token punctuation">,</span>
-        options<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          minimize<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-          outputPath<span class="token punctuation">:</span> <span class="token string">'./css/'</span><span class="token punctuation">,</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>loader<span class="token punctuation">:</span> <span class="token string">'postcss-loader'</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">]</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+plugins:[
+  ...
+  new MiniCssExtractPlugin(&#123;
+        filename: &quot;./css/[name].[hash:8].css&quot;,
+        //chunkFilename: &quot;[name].css&quot;
+      &#125;)
+]
+....
+modules: &#123;
+  ....
+  rules: [
+    &#123;
+    test: /\.css$/,
+    use: [&#123;
+      loader: MiniCssExtractPlugin.loader,
+      options: &#123;
+        //因为上面设置了 /css/ 目录
+        //Issue：https://github.com/webpack-contrib/mini-css-extract-plugin/issues/44#issuecomment-379059788
+        publicPath: &#39;../&#39;
+      &#125;
+    &#125;,
+    &#123;
+      loader: &#39;css-loader&#39;,
+        options: &#123;
+          minimize: true,
+          outputPath: &#39;./css/&#39;,
+        &#125;
+    &#125;,
+    &#123;loader: &#39;postcss-loader&#39;&#125;,
+  &#125;]
+&#125;
+</code></pre>
 <h2>总结</h2><p>webpack4 官方 <a target="_blank" rel="noopener" href="https://github.com/webpack/webpack/releases">CHANGELOG</a></p>
 <ol>
 <li>entry ：默认为 src/index</li>

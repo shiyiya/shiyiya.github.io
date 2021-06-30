@@ -44,216 +44,216 @@
 <span id="more"></span>
 
 <h2>action</h2><p>action =&gt; 是纯声明式的数据结构，只提供事件的所有要素，不提供逻辑,返回一个对象。<br>Action 的任务是描述它想做什么？</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> changeTitle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  type<span class="token punctuation">:</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//告诉我们它想改变title，并返回改变的东西。</span>
-  newTitle<span class="token punctuation">:</span> <span class="token string">'Hello Reducer'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="js">const changeTitle = () =&gt; (&#123;
+  type: &#39;CHANGE_TITLE&#39;, //告诉我们它想改变title，并返回改变的东西。
+  newTitle: &#39;Hello Reducer&#39;,
+&#125;)
+</code></pre>
 <h2>reducer</h2><p>reducer =&gt; 匹配 action,返回新的 state。<br>reducer 就是帮我们做 action 想做的事~如何去做,todo。<br>(state, action) =&gt; newState</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> initialState <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  title<span class="token punctuation">:</span> <span class="token string">'Hello world'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> Reducer <span class="token operator">=</span> <span class="token punctuation">(</span>state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        title<span class="token punctuation">:</span> action<span class="token punctuation">.</span>newTitle<span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//返回一个title覆盖原title，以改变title</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">default</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> state
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code class="js">const initialState = &#123;
+  title: &#39;Hello world&#39;,
+&#125;
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: action.newTitle, //返回一个title覆盖原title，以改变title
+      &#125;
+    default:
+      return state
+  &#125;
+&#125;
+</code></pre>
 <h2>store</h2><p>Store =&gt; 就是我们存取状态数据的地方，外加可以订阅状态数据改变时触发的事件。<br>所有的 state 都以一个对象树的形式储存在一个单一的 store 中。</p>
 <p>维持应用的 state；<br>提供 getState() 方法获取 state；<br>提供 dispatch(action) 方法更新 state；<br>通过 subscribe(listener) 注册监听器；<br>const store = createStore(Reducer);<br>console.log(store.getState());//输出{title: “Hello world”}<br>store.dispath(changeTitle());<br>console.log(store.getState());//输出{title: “Hello reducer”}</p>
 <h2>use with react</h2><p>Redux 和 React 之间没有关系。Redux 可以搭配 React、Angular 甚至纯 JS。但是 Redux 还是比较适合和 React 搭配的，因为 React 允许你以 state 的形式来描述界面，而 Redux 非常擅长控制 state 的变化。</p>
 <p>create-react-app demo<br>rm -rf src/*<br>yarn add react-redux redux<br>新建 src/index.js &amp; src/app.js;</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> ReactDOM <span class="token keyword">from</span> <span class="token string">'react-dom'</span>
+<pre><code class="js">import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
 
-<span class="token keyword">const</span> Hello <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token string">'Hello world!!!'</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
+const Hello = () =&gt; &lt;h1&gt;&#39;Hello world!!!&#39;&lt;/h1&gt;
 
-ReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>Heloo <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">,</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'root'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ReactDOM.render(&lt;Heloo /&gt;, document.getElementById(&#39;root&#39;))
+</code></pre>
 <p>yarn start 现在刷新浏览器你能看到 Hello world。</p>
 <h2>create store &amp; reducer</h2><p>所有容器组件都可以访问 Redux store，所以可以手动监听它。一种方式是把它以 props 的形式传入到所有容器组件中。但这太麻烦了，因为必须要用 store 把展示组件包裹一层，仅仅是因为恰好在组件树中渲染了一个容器组件。</p>
 <p>建议的方式是使用指定的 React Redux 组件 <Provider> 来 魔法般的 让所有容器组件都可以访问 store，而不必显示地传递它。只需要在渲染根组件时使用即可。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">//src/reducers/index.js</span>
-<span class="token keyword">const</span> initialState <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  title<span class="token punctuation">:</span> <span class="token string">'Hello world'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<pre><code class="js">//src/reducers/index.js
+const initialState = &#123;
+  title: &#39;Hello world&#39;,
+&#125;
 
-<span class="token keyword">const</span> Reducer <span class="token operator">=</span> <span class="token punctuation">(</span>state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        title<span class="token punctuation">:</span> <span class="token string">'Hello reducer'</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">default</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> state
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> Reducer
-<span class="token comment" spellcheck="true">// src/components/index.js</span>
-<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: &#39;Hello reducer&#39;,
+      &#125;
+    default:
+      return state
+  &#125;
+&#125;
+export default Reducer
+// src/components/index.js
+import React from &#39;react&#39;
 
-<span class="token keyword">const</span> App <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>
-  <span class="token operator">&lt;</span>div<span class="token operator">></span>
-    <span class="token operator">&lt;</span>h1<span class="token operator">></span>hello world<span class="token operator">!</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-    <span class="token operator">&lt;</span>button<span class="token operator">></span>Change<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
-<span class="token punctuation">)</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> App
-<span class="token comment" spellcheck="true">//src/index.js</span>
-<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> ReactDOM <span class="token keyword">from</span> <span class="token string">'react-dom'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> Provider <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> createStore <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'redux'</span>
+const App = () =&gt; (
+  &lt;div&gt;
+    &lt;h1&gt;hello world!&lt;/h1&gt;
+    &lt;button&gt;Change&lt;/button&gt;
+  &lt;/div&gt;
+)
+export default App
+//src/index.js
+import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import &#123; Provider &#125; from &#39;react-redux&#39;
+import &#123; createStore &#125; from &#39;redux&#39;
 
-<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./components/'</span>
-<span class="token keyword">import</span> Reducer <span class="token keyword">from</span> <span class="token string">'./reducers/'</span>
+import App from &#39;./components/&#39;
+import Reducer from &#39;./reducers/&#39;
 
-<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span>Reducer<span class="token punctuation">)</span>
+const store = createStore(Reducer)
 
-ReactDOM<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>
-  <span class="token operator">&lt;</span>Provider store<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>store<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">></span>
-    <span class="token operator">&lt;</span>App <span class="token operator">/</span><span class="token operator">></span>
-  <span class="token operator">&lt;</span><span class="token operator">/</span>Provider<span class="token operator">></span><span class="token punctuation">,</span>
-  document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'root'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>store<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//&amp;#123;title: "Hello world"&amp;#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ReactDOM.render(
+  &lt;Provider store=&#123;store&#125;&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;,
+  document.getElementById(&#39;root&#39;)
+)
+console.log(store.getState()) //&#123;title: &quot;Hello world&quot;&#125;
+</code></pre>
 <h2>connect</h2><p>连接组件与 store</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> connect <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span>
+<pre><code class="js">import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
 
-<span class="token keyword">const</span> App <span class="token operator">=</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>
-  <span class="token operator">&lt;</span>div<span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&lt;</span>h1<span class="token operator">></span>hello world<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-    <span class="token operator">&lt;</span>button<span class="token operator">></span>Change<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
-<span class="token punctuation">)</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+const App = (props) =&gt; (
+  &lt;div&gt;
+    &#123;console.log(props)&#125;
+    &lt;h1&gt;hello world&lt;/h1&gt;
+    &lt;button&gt;Change&lt;/button&gt;
+  &lt;/div&gt;
+)
+export default connect()(App)
+</code></pre>
 <p>如果你打开你的开发者工具控制台，你应该看到一条消息！</p>
 <p>组件现在可以通过 store 的 dispath 函数改变’state’。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// src/components/index.js</span>
-<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> connect <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span>
+<pre><code class="js">// src/components/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
 
-<span class="token keyword">class</span> <span class="token class-name">App</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> type<span class="token punctuation">:</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'hello redux'</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>
-      <span class="token operator">&lt;</span>div<span class="token operator">></span>
-        <span class="token operator">&lt;</span>h1<span class="token operator">></span>hello world<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-        <span class="token operator">&lt;</span>button<span class="token operator">></span>Change<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
-    <span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+    this.props.dispatch(&#123; type: &#39;CHANGE_TITLE&#39;, title: &#39;hello redux&#39; &#125;)
+  &#125;
+  render() &#123;
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;hello world&lt;/h1&gt;
+        &lt;button&gt;Change&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+export default connect()(App)
+</code></pre>
 <p>现在 title 改变了！</p>
 <h2>To change</h2><p>利用 connect 将 state 注入到组件(props)<br>点击按钮，hello world 将变成 hello reducer</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// src/component/index.js</span>
-<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> connect <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span>
+<pre><code class="js">// src/component/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
 
-<span class="token keyword">class</span> <span class="token class-name">App</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">const</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> title<span class="token punctuation">,</span> dispatch <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>
-      <span class="token operator">&lt;</span>div<span class="token operator">></span>
-        <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>title<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-        <span class="token operator">&lt;</span>button
-          onClick<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-            <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> type<span class="token punctuation">:</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'hello redux'</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-          <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token operator">></span>
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+  &#125;
+  render() &#123;
+    const &#123; title, dispatch &#125; = this.props
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;&#123;this.props.title&#125;&lt;/h1&gt;
+        &lt;button
+          onClick=&#123;() =&gt;
+            dispatch(&#123; type: &#39;CHANGE_TITLE&#39;, title: &#39;hello redux&#39; &#125;)
+          &#125;
+        &gt;
           Change
-        <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
-    <span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">function</span> <span class="token function">mapStateToProps</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    title<span class="token punctuation">:</span> state<span class="token punctuation">.</span>title<span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span>mapStateToProps<span class="token punctuation">)</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        &lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+function mapStateToProps(state) &#123;
+  return &#123;
+    title: state.title,
+  &#125;
+&#125;
+export default connect(mapStateToProps)(App)
+</code></pre>
 <h2>create action</h2><p>将 action 抽离，并注入到组件(props)中.</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// src/actions/index.js</span>
-<span class="token keyword">export</span> <span class="token keyword">const</span> changeTitle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  type<span class="token punctuation">:</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">,</span>
-  newTitl<span class="token punctuation">:</span> <span class="token string">'Hello Stark'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
-<span class="token keyword">export</span> <span class="token keyword">const</span> resetTitle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  type<span class="token punctuation">:</span> <span class="token string">'RESET_TITLE'</span><span class="token punctuation">,</span>
-  newTitle<span class="token punctuation">:</span> <span class="token string">'reset'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<pre><code class="js">// src/actions/index.js
+export const changeTitle = () =&gt; (&#123;
+  type: &#39;CHANGE_TITLE&#39;,
+  newTitl: &#39;Hello Stark&#39;,
+&#125;)
+export const resetTitle = () =&gt; (&#123;
+  type: &#39;RESET_TITLE&#39;,
+  newTitle: &#39;reset&#39;,
+&#125;)
 
-<span class="token comment" spellcheck="true">// src/components/index.js</span>
-<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> connect <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span>
-<span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> bindActionCreators <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">'redux'</span>
-<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> action <span class="token keyword">from</span> <span class="token string">'../actions/'</span>
+// src/components/index.js
+import React from &#39;react&#39;
+import &#123; connect &#125; from &#39;react-redux&#39;
+import &#123; bindActionCreators &#125; from &#39;redux&#39;
+import * as action from &#39;../actions/&#39;
 
-<span class="token keyword">class</span> <span class="token class-name">App</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">const</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> title<span class="token punctuation">,</span> changeTitle<span class="token punctuation">,</span> resetTitle <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>
-      <span class="token operator">&lt;</span>div<span class="token operator">></span>
-        <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>title<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>changeTitle<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">></span>Change<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>resetTitle<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">></span>Reset<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
-      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
-    <span class="token punctuation">)</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">function</span> <span class="token function">mapStateToProps</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    title<span class="token punctuation">:</span> state<span class="token punctuation">.</span>title<span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">function</span> <span class="token function">mapActionCreatorsToProps</span><span class="token punctuation">(</span>dispatch<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token function">bindActionCreators</span><span class="token punctuation">(</span>action<span class="token punctuation">,</span> dispatch<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//合并多个action</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span>mapStateToProps<span class="token punctuation">,</span> mapActionCreatorsToProps<span class="token punctuation">)</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">// src/reducers/index.js</span>
-<span class="token keyword">const</span> initialState <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  title<span class="token punctuation">:</span> <span class="token string">'Hello world'</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+class App extends React.Component &#123;
+  constructor(props) &#123;
+    super(props)
+  &#125;
+  render() &#123;
+    const &#123; title, changeTitle, resetTitle &#125; = this.props
+    console.log(this.props)
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;&#123;title&#125;&lt;/h1&gt;
+        &lt;button onClick=&#123;changeTitle&#125;&gt;Change&lt;/button&gt;
+        &lt;button onClick=&#123;resetTitle&#125;&gt;Reset&lt;/button&gt;
+      &lt;/div&gt;
+    )
+  &#125;
+&#125;
+function mapStateToProps(state) &#123;
+  return &#123;
+    title: state.title,
+  &#125;
+&#125;
+function mapActionCreatorsToProps(dispatch) &#123;
+  return bindActionCreators(action, dispatch) //合并多个action
+&#125;
+export default connect(mapStateToProps, mapActionCreatorsToProps)(App)
+// src/reducers/index.js
+const initialState = &#123;
+  title: &#39;Hello world&#39;,
+&#125;
 
-<span class="token keyword">const</span> Reducer <span class="token operator">=</span> <span class="token punctuation">(</span>state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token string">'CHANGE_TITLE'</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        title<span class="token punctuation">:</span> action<span class="token punctuation">.</span>newTitle<span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token string">'RESET_TITLE'</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        title<span class="token punctuation">:</span> action<span class="token punctuation">.</span>newTitle<span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">default</span><span class="token punctuation">:</span>
-      <span class="token keyword">return</span> state
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">export</span> <span class="token keyword">default</span> Reducer
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+const Reducer = (state = initialState, action) =&gt; &#123;
+  switch (action.type) &#123;
+    case &#39;CHANGE_TITLE&#39;:
+      return &#123;
+        title: action.newTitle,
+      &#125;
+    case &#39;RESET_TITLE&#39;:
+      return &#123;
+        title: action.newTitle,
+      &#125;
+    default:
+      return state
+  &#125;
+&#125;
+export default Reducer
+</code></pre>
 
     </div>
 
