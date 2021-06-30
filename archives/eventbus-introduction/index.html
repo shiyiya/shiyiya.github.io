@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <title>EventBus 应用及简易实现 - 佚名</title>
+    
+      
+<link rel="stylesheet" href="/css/style.css">
+
+      
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+      
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+      
+<link rel="stylesheet" href="/libs/zpix/zpix.css">
+
+      
+<script src="/js/theme.js"></script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
+</head>
+
+<body id="bodyx" path="archives/eventbus-introduction/">
+    <div class="hd posts">
+    <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <h1 class="post-title">EventBus 应用及简易实现</h1>
+    <hr>
+
+    
+        <div class="outdated-notify">
+            本文发布于 <span class="num">-</span> 天前，文中所描述的信息可能已发生改变或是过时，请注意辨别
+        </div>
+    
+
+    <div class="post-content">
+        <p>eventbus：使用发布订阅模式，多用于跨组件跨页面通信，即将一些个互不相干的远房亲戚建立通信。并不需要改动过多的代码，只需在需要的时候注册监听即可，大大降低代码耦合。</p>
+<h2>eventbus 的应用场景</h2><p>此时有这么一个需求，实现一个类似微信小程序的 toast ，使其在任意页面可直接调用显示，此时就可以用 eventbus 将 toast 与任意页面建立联系。</p>
+<pre><code class="js">// 主入口
+
+&lt;&gt;
+  &lt;Toast /&gt;
+  &lt;Routes /&gt;
+&lt;/&gt;
+</code></pre>
+<pre><code class="js">// toast
+const Toast = () =&gt; &#123;
+  const [toasts, setToasts] = useState([])
+
+  useEffect(() =&gt; &#123;
+    const addToast = (&#123; type = &#39;success&#39;, title, message, duration = 5 &#125;) =&gt; &#123;
+      const id = uuid()
+
+      setToasts((currentToasts) =&gt; [
+        &#123; id, type, title, message &#125;,
+        ...currentToasts
+      ])
+
+      if (duration) &#123;
+        setTimeout(() =&gt; removeToast(id), duration * 1000)
+      &#125;
+    &#125;
+
+    const removeToast = (id) =&gt; &#123;
+      setToasts((currentToasts) =&gt;
+        currentToasts.filter((toast) =&gt; toast.id !== id)
+      )
+    &#125;
+
+    // 添加订阅
+    eb.on(&#39;toast&#39;, addToast)
+
+    return () =&gt; eb.off(&#39;toast&#39;, addToast)
+  &#125;, [])
+
+  return (
+    &lt;div&gt;
+      &lt;TransitionGroup&gt;
+        &#123;toasts.map((toast) =&gt; (
+          &lt;CSSTransition key=&#123;toast.id&#125; classNames=&quot;toast&quot; timeout=&#123;200&#125;&gt;
+            &lt;div
+              key=&#123;toast.id&#125;
+              type=&#123;toast.type&#125;
+              onClick=&#123;() =&gt; removeToast(toast.id)&#125;
+            &gt;
+              &#123;toast.title &amp;&amp; &lt;Title&gt;&#123;toast.title&#125;&lt;/Title&gt;&#125;
+              &#123;toast.message &amp;&amp; &lt;Message&gt;&#123;toast.message&#125;&lt;/Message&gt;&#125;
+            &lt;/div&gt;
+          &lt;/CSSTransition&gt;
+        ))&#125;
+      &lt;/TransitionGroup&gt;
+    &lt;/div&gt;
+  )
+&#125;
+</code></pre>
+<pre><code class="js">// 任意位置
+pubsub.emit(&#39;toast&#39;, &#123; title: &#39;Hello&#39;, message: &#39;Hello&#39; &#125;)
+</code></pre>
+<h2>简易 eventbus 实现</h2><pre><code class="ts">class EventBus &#123;
+  private events: Record&lt;string, Array&lt;any&gt;&gt; = Object.create(null)
+
+  on&lt;T&gt;(name: string, fn: (data: T) =&gt; void) &#123;
+    this.events[name] || (this.events[name] = [])
+    this.events[name].push(fn)
+  &#125;
+
+  emit(name: string, data?: any) &#123;
+    this.events[name]?.forEach((fn: Function) =&gt; &#123;
+      fn(data)
+    &#125;)
+  &#125;
+
+  once&lt;T&gt;(name: string, fn: (data: T) =&gt; void) &#123;
+    this.events[name] || (this.events[name] = [])
+    const f = (...arg: any) =&gt; &#123;
+      fn(arg)
+      this.off(name, f)
+    &#125;
+    this.events[name].push(f)
+  &#125;
+
+  off(name: string, fn?: Function) &#123;
+    if (fn) &#123;
+      this.events[name].splice(
+        this.events[name].findIndex((_) =&gt; _ === fn),
+        1
+      )
+    &#125; else &#123;
+      delete this.events[name]
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<h2>基于 DOM 的实现</h2><pre><code class="ts">class DomEventBus &#123;
+  private eventTarget: EventTarget
+
+  constructor(comment: string) &#123;
+    this.eventTarget = document.createComment(comment)
+  &#125;
+
+  on&lt;T&gt;(name: string, listener: (event: CustomEvent&lt;T&gt;) =&gt; void) &#123;
+    this.eventTarget.addEventListener(name, listener as any)
+  &#125;
+
+  once&lt;T&gt;(name: string, listener: (event: CustomEvent&lt;T&gt;) =&gt; void) &#123;
+    this.eventTarget.addEventListener(name, listener as any, &#123; once: true &#125;)
+  &#125;
+
+  emit&lt;T&gt;(name: string, data?: T) &#123;
+    this.eventTarget.dispatchEvent(new CustomEvent(name, &#123; detail: data &#125;))
+  &#125;
+
+  off(name: string, listener: (event: CustomEvent&lt;any&gt;) =&gt; void) &#123;
+    this.eventTarget.removeEventListener(name, listener as any)
+  &#125;
+&#125;
+</code></pre>
+
+    </div>
+
+    
+
+    <script>
+        var pub_date = 1625022058000;
+    </script>
+</div>
+    <div class="footer"
+     id="footer">
+    <p>
+        Copyright © 2020 <a class="flink"
+           href="http://shiyiya.github.io">佚名</a>
+        <br>
+        <label class="el-switch el-switch-green el-switch-sm"
+               style="vertical-align: sub;">
+            <input type="checkbox"
+                   name="switch"
+                   id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+    </p>
+</div>
+
+<a href="javascript:void(0);" class="back-to-top" target="_self"></a>
+
+<input type="hidden"
+       id="web_style"
+       value="white">
+<input type="hidden"
+       id="valine_appid"
+       value="CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz">
+<input type="hidden"
+       id="valine_appKey"
+       value="uWuwGS1xiIwh3zHKENc7ubyL">
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+
+  
+<script src="/libs/jquery.min.js"></script>
+
+  
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+  
+<script src="/js/js.js"></script>
+
+
+<style type="text/css">
+    .v .vlist .vcard .vhead .vsys {
+        color: #3a3e4a;
+    }
+
+    .v .vlist .vcard .vh .vmeta .vat {
+        color: #638fd5;
+    }
+
+    .v .vlist .vcard .vhead .vnick {
+        color: #6ba1ff;
+    }
+
+    .v a {
+        color: #8696b1;
+    }
+
+    .v .vlist .vcard .vhead .vnick:hover {
+        color: #669bfc;
+    }
+
+    .v .vcards .vcard .vhead .vnick {
+        padding-left: 1px;
+    }
+
+    .v .vcontent .vemoji {
+        max-width: 30px;
+    }
+
+    .v[data-class=v] p {
+        color: inherit;
+    }
+
+</style>
+
+<!-- Load TweenLite -->
+<script src="https://cdn.jsdelivr.net/npm/greensock@1.20.2/dist/TweenLite.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117481437-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117481437-1');
+</script>
+
+
+</body>
+
+</html>
