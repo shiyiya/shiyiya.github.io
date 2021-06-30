@@ -69,7 +69,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: uncategorized
+default_category: none
 category_map:
 tag_map:
 
