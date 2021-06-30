@@ -106,7 +106,7 @@ plugin:
   - hexo-generator-category-enhance
   - hexo-generator-feed
   - hexo-asset-image
-  - hexo-prism-plugin
+  # - hexo-prism-plugin
   - hexo-toc
 
 # Generate archive page
