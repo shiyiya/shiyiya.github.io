@@ -25,5 +25,5 @@ cdn:
   url: https://cdn.jsdelivr.net/gh/journey-ad/nocilol.me
 
 analytics:
-  enabled: false
-  googleId: UA-71903189-1
+  enabled: true
+  googleId: UA-117481437-1
