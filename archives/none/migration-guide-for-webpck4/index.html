@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <title>我的 Webpack（4）升级指南 - 佚名</title>
+    
+      
+<link rel="stylesheet" href="/css/style.css">
+
+      
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+      
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+      
+<link rel="stylesheet" href="/libs/zpix/zpix.css">
+
+      
+<script src="/js/theme.js"></script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
+</head>
+
+<body id="bodyx" path="archives/none/migration-guide-for-webpck4/">
+    <div class="hd posts">
+    <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <h1 class="post-title">我的 Webpack（4）升级指南</h1>
+    <hr>
+
+    
+        <div class="outdated-notify">
+            本文发布于 <span class="num">-</span> 天前，文中所描述的信息可能已发生改变或是过时，请注意辨别
+        </div>
+    
+
+    <div class="post-content">
+        <p>全新的 webpack（4）来了，带来了全新的特性，更快的性能，更少的配置，先来升级踩波坑吧！</p>
+<span id="more"></span>
+
+<h2>升级 webpack</h2><p>直接卸载重装最新！</p>
+<pre class="line-numbers language-shell"><code class="language-shell">yarn remove webpack webpack-dev-server
+yarn add webpack webpack-cli
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>webpack 4 必须安装 CLI</p>
+<p>官方的介绍是这样的：<br>不安装将会报 error。</p>
+<h2>修改配置</h2><h3>添加 mode</h3><p>webpack 默认提供 mode 选项<br>值为 development(开发环境) || production(生产环境)<br>不需要自行判断是生产环境还是开发环境，直接在配置下增加字段。<br>development：默认启用 热加载/缓存 等。<br>production： 默认启用代码压缩等功能。<br><code>mode: development || production</code></p>
+<h3>CommonsChunkPlugin 的弃用</h3><pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// webpack3</span>
+<span class="token keyword">new</span> <span class="token class-name">webpack<span class="token punctuation">.</span>optimize<span class="token punctuation">.</span>CommonsChunkPlugin</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      names<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'common'</span><span class="token punctuation">,</span><span class="token string">'vendor'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      filename<span class="token punctuation">:</span> <span class="token string">'./common/[name].bundle.js'</span><span class="token punctuation">,</span>
+      minChunks<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// webpack4</span>
+  optimization<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    minimize<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    splitChunks<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      maxAsyncRequests<span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+      maxInitialRequests<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+      minChunks<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      cacheGroups<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        commons<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+          filename<span class="token punctuation">:</span> <span class="token string">'./commons/[name].[hash:8].js'</span><span class="token punctuation">,</span>
+          name<span class="token punctuation">:</span> <span class="token string">"commons"</span><span class="token punctuation">,</span>
+          chunks<span class="token punctuation">:</span> <span class="token string">"initial"</span><span class="token punctuation">,</span>
+          minChunks<span class="token punctuation">:</span> <span class="token number">2</span>
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+      vendor<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        test<span class="token punctuation">:</span> <span class="token regex">/node_modules/</span><span class="token punctuation">,</span>
+        filename<span class="token punctuation">:</span> <span class="token string">'./vendor/[name].[hash:8].js'</span><span class="token punctuation">,</span>
+        name<span class="token punctuation">:</span> <span class="token string">"vendor"</span><span class="token punctuation">,</span>
+        chunks<span class="token punctuation">:</span> <span class="token string">"initial"</span><span class="token punctuation">,</span>
+        minChunks<span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3>extract-text-webpack-plugin 将不再支持</h3><p>改用 MiniCssExtractPlugin 这个插件,具体内如可查看官方 Issue 。</p>
+<pre><code>yarn add mini-css-extract-plugin
+</code></pre>
+<p>配置如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> MiniCssExtractPlugin <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"mini-css-extract-plugin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+plugins<span class="token punctuation">:</span><span class="token punctuation">[</span>
+  <span class="token operator">...</span>
+  <span class="token keyword">new</span> <span class="token class-name">MiniCssExtractPlugin</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        filename<span class="token punctuation">:</span> <span class="token string">"./css/[name].[hash:8].css"</span><span class="token punctuation">,</span>
+        <span class="token comment" spellcheck="true">//chunkFilename: "[name].css"</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
+<span class="token operator">...</span><span class="token punctuation">.</span>
+modules<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+  <span class="token operator">...</span><span class="token punctuation">.</span>
+  rules<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    test<span class="token punctuation">:</span> <span class="token regex">/\.css$/</span><span class="token punctuation">,</span>
+    use<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      loader<span class="token punctuation">:</span> MiniCssExtractPlugin<span class="token punctuation">.</span>loader<span class="token punctuation">,</span>
+      options<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//因为上面设置了 /css/ 目录</span>
+        <span class="token comment" spellcheck="true">//Issue：https://github.com/webpack-contrib/mini-css-extract-plugin/issues/44#issuecomment-379059788</span>
+        publicPath<span class="token punctuation">:</span> <span class="token string">'../'</span>
+      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+      loader<span class="token punctuation">:</span> <span class="token string">'css-loader'</span><span class="token punctuation">,</span>
+        options<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+          minimize<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          outputPath<span class="token punctuation">:</span> <span class="token string">'./css/'</span><span class="token punctuation">,</span>
+        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>loader<span class="token punctuation">:</span> <span class="token string">'postcss-loader'</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">]</span>
+<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2>总结</h2><p>webpack4 官方 <a target="_blank" rel="noopener" href="https://github.com/webpack/webpack/releases">CHANGELOG</a></p>
+<ol>
+<li>entry ：默认为 src/index</li>
+<li>output：默认为 dist</li>
+<li>新增 mode：为 production 和 development （必选）</li>
+<li>默认热加载</li>
+<li>新增 cli</li>
+<li>生产环境默认开启了很多代码优化（ minify，splite 等),即不需要 UglifyJsPlugin</li>
+<li>CommonsChunkPlugin 删除，改用 optimization.splitChunks</li>
+</ol>
+
+    </div>
+
+    
+
+    <script>
+        var pub_date = 1537372800000;
+    </script>
+</div>
+    <div class="footer"
+     id="footer">
+    <p>
+        Copyright © 2020 <a class="flink"
+           href="http://shiyiya.github.io">佚名</a>
+        <br>
+        <label class="el-switch el-switch-green el-switch-sm"
+               style="vertical-align: sub;">
+            <input type="checkbox"
+                   name="switch"
+                   id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+    </p>
+</div>
+
+<a href="javascript:void(0);" class="back-to-top" target="_self"></a>
+
+<input type="hidden"
+       id="web_style"
+       value="white">
+<input type="hidden"
+       id="valine_appid"
+       value="CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz">
+<input type="hidden"
+       id="valine_appKey"
+       value="uWuwGS1xiIwh3zHKENc7ubyL">
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+
+  
+<script src="/libs/jquery.min.js"></script>
+
+  
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+  
+<script src="/js/js.js"></script>
+
+
+<style type="text/css">
+    .v .vlist .vcard .vhead .vsys {
+        color: #3a3e4a;
+    }
+
+    .v .vlist .vcard .vh .vmeta .vat {
+        color: #638fd5;
+    }
+
+    .v .vlist .vcard .vhead .vnick {
+        color: #6ba1ff;
+    }
+
+    .v a {
+        color: #8696b1;
+    }
+
+    .v .vlist .vcard .vhead .vnick:hover {
+        color: #669bfc;
+    }
+
+    .v .vcards .vcard .vhead .vnick {
+        padding-left: 1px;
+    }
+
+    .v .vcontent .vemoji {
+        max-width: 30px;
+    }
+
+    .v[data-class=v] p {
+        color: inherit;
+    }
+
+</style>
+
+<!-- Load TweenLite -->
+<script src="https://cdn.jsdelivr.net/npm/greensock@1.20.2/dist/TweenLite.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117481437-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117481437-1');
+</script>
+
+
+</body>
+
+</html>
