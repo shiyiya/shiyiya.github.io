@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <title>Vue3中的依赖收集 (reactive) - 佚名</title>
+    
+      
+<link rel="stylesheet" href="/css/style.css">
+
+      
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+      
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+      
+<link rel="stylesheet" href="/libs/zpix/zpix.css">
+
+      
+<script src="/js/theme.js"></script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
+</head>
+
+<body id="bodyx" path="archives/reactive-in-vue3/">
+    <div class="hd posts">
+    <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <h1 class="post-title">Vue3中的依赖收集 (reactive)</h1>
+    <hr>
+
+    
+        <div class="outdated-notify">
+            本文发布于 <span class="num">-</span> 天前，文中所描述的信息可能已发生改变或是过时，请注意辨别
+        </div>
+    
+
+    <div class="post-content">
+        <p>vue3 中的依赖收集</p>
+<p>依赖收集：通过自然地使用变量，来完成依赖的收集，当变量改变时，根据收集的依赖判断是否需要触发回调。</p>
+<p>举个例子 </p>
+<pre><code class="js">const state= reactive(&#123; count:1 &#125;)
+effect(()=&gt;&#123;
+ // update ... 
+   document.title=`$&#123;state.count&#125;`
+&#125;)
+</code></pre>
+<p>上面例子中， effect 收集内部依赖(内部使用到的变量) state.count，当依赖改变时根据收集好的依赖关系判断是否有对应回调(更新)</p>
+<h2>依赖收集的实现</h2><p>我们需要在每次 getter 的时候将对应的依赖关系确定，此后执行 setter 时就能知道那个依赖更新了，并执行对应的回调；所以我们可以使用 proxy 重写 setter &amp; getter，将收集和更新代码置入其中。</p>
+<pre><code class="js">const targetsMap = new WeakMap() 
+// &#123; target &#123; key ［...effect］&#125; &#125;
+
+function track(target, key) &#123;
+  let depsMap = targetsMap.get(target)
+  if (!depsMap) &#123;
+    targetsMap.set(target, (depsMap = new Map()))
+  &#125;
+  
+  let deps = depsMap.get(key)
+  if (!deps) &#123;
+    depsMap.set(key, (deps = new Set()))
+  &#125;
+  
+  deps.add(effect) // 添加动作
+&#125;
+
+function trigger(target, key) &#123;
+  const depsMap = targetsMap.get(target) 
+  if (!depsMap) &#123;
+    return
+  &#125;
+  let deps = depsMap.get(key)
+  if (deps) &#123;
+    deps.forEach(effect =&gt; &#123;
+      effect()
+    &#125;)
+  &#125;
+
+function reactive(target) &#123;
+  const handlers = &#123;
+    get(target, key, receiver) &#123;
+      track(target, key) // 收集依赖
+      return Reflect.get(target, key, receiver)
+    &#125;,
+    set(target, key, value, receiver) &#123;
+      let oldValue = target[key]
+      const newValue = Reflect.set(target, key, value, receiver)
+      if (result &amp;&amp; oldValue != value) &#123;
+        trigger(target, key) // 依赖更新
+      &#125;
+      return newValue
+    &#125;,
+  &#125;
+  return new Proxy(target, handlers)
+&#125;
+ 
+// 暂时不实现
+// function effcect()&#123;&#125;
+
+
+const state= reactive(&#123; count:1 &#125;)
+
+// 写死
+function effect()&#123;
+   // update ... 
+   document.title=`$&#123;state.count&#125;`
+&#125;
+
+// 当更新 state 的值时就会触发回调(effect)
+state.count = 2
+</code></pre>
+<p>当state改变时 effect 将会更新 title，但此时effect是写死的，我想添加其他更新总不能一个个去加吧，此时重头戏才刚刚开始！</p>
+<p>上面说了，在 getter 时，去依赖收集，如何触发更新内的 getter ？</p>
+<h2>实现之前的 effect</h2><pre><code class="js">currentEffect=null
+
+function effect(effect)&#123;
+ currentEffect=effect //保存effect，以便getter时建立依赖 ，此时 track 只需将currentEffect加入deps即可
+  effect() // 触发 effect 内 getter 进行依赖收集 
+  currentEffect// 收集完成
+&#125;
+</code></pre>
+<p>是的，只需要执行它，就像开始的例子一样，此时业务代码 effect 写法</p>
+<pre><code class="js">effect(()=&gt;&#123;
+ // update ... 
+   document.title=`$&#123;state.count&#125;`
+&#125;)
+
+// more ...
+effect(()=&gt;&#123;
+ // update ... 
+   document.body.innerHTML = `$&#123;state.count&#125;`
+&#125;)
+</code></pre>
+<h2>useref</h2><h2>usecomputed</h2><h2>相关链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-next/tree/master/packages/reactivity">https://github.com/vuejs/vue-next/tree/master/packages/reactivity</a></li>
+</ul>
+
+    </div>
+
+    
+
+    <script>
+        var pub_date = 1625414400000;
+    </script>
+</div>
+    <div class="footer"
+     id="footer">
+    <p>
+        Copyright © 2020 <a class="flink"
+           href="http://shiyiya.github.io">佚名</a>
+        <br>
+        <label class="el-switch el-switch-green el-switch-sm"
+               style="vertical-align: sub;">
+            <input type="checkbox"
+                   name="switch"
+                   id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+    </p>
+</div>
+
+<a href="javascript:void(0);" class="back-to-top" target="_self"></a>
+
+<input type="hidden"
+       id="web_style"
+       value="white">
+<input type="hidden"
+       id="valine_appid"
+       value="CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz">
+<input type="hidden"
+       id="valine_appKey"
+       value="uWuwGS1xiIwh3zHKENc7ubyL">
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+
+  
+<script src="/libs/jquery.min.js"></script>
+
+  
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+  
+<script src="/js/js.js"></script>
+
+
+<style type="text/css">
+    .v .vlist .vcard .vhead .vsys {
+        color: #3a3e4a;
+    }
+
+    .v .vlist .vcard .vh .vmeta .vat {
+        color: #638fd5;
+    }
+
+    .v .vlist .vcard .vhead .vnick {
+        color: #6ba1ff;
+    }
+
+    .v a {
+        color: #8696b1;
+    }
+
+    .v .vlist .vcard .vhead .vnick:hover {
+        color: #669bfc;
+    }
+
+    .v .vcards .vcard .vhead .vnick {
+        padding-left: 1px;
+    }
+
+    .v .vcontent .vemoji {
+        max-width: 30px;
+    }
+
+    .v[data-class=v] p {
+        color: inherit;
+    }
+
+</style>
+
+<!-- Load TweenLite -->
+<script src="https://cdn.jsdelivr.net/npm/greensock@1.20.2/dist/TweenLite.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117481437-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117481437-1');
+</script>
+
+
+</body>
+
+</html>
