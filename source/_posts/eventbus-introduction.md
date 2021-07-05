@@ -75,7 +75,7 @@ const Toast = () => {
 
 ```js
 // 任意位置
-pubsub.emit('toast', { title: 'Hello', message: 'Hello' })
+eb.emit('toast', { title: 'Hello', message: 'Hello' })
 ```
 
 ## 简易 eventbus 实现
