@@ -136,13 +136,41 @@ function preorderTraversal(root: TreeNode | null): number[] &#123;
   return res
 &#125;
 </code></pre>
+<h2>对称二叉树</h2><pre><code class="ts">// 递归
+function isSymmetric(root: TreeNode | null): boolean &#123;
+  return check(root.left, root.right)
+&#125;
+
+function check(left: TreeNode, right: TreeNode) &#123;
+  if (left == null &amp;&amp; right == null) return true
+  if (left == null || right == null || left.val != right.val) return false
+
+  return check(left.left, right.right) &amp;&amp; check(left.right, right.left)
+&#125;
+
+// 队列
+function isSymmetric(root: TreeNode | null): boolean &#123;
+  if (root == null) return true
+
+  const queue = [root.left, root.right]
+
+  while (queue.length) &#123;
+    const [left, right] = [queue.shift(), queue.shift()]
+    if (left == null &amp;&amp; right == null) continue
+    if (left == null || right == null || left.val != right.val) return false
+
+    queue.push(left.left, right.right, left.right, right.left)
+  &#125;
+  return true
+&#125;
+</code></pre>
 
     </div>
 
     
 
     <script>
-        var pub_date = 1630725515367;
+        var pub_date = 1630744122707;
     </script>
 </div>
     <div class="footer"
