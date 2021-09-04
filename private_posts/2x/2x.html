@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>关于 - 佚名</title>
+    <title>佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -27,10 +27,10 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="about/index.html">
+<body id="bodyx" path="private_posts/2x/2x.html">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">关于</h1>
+    <h1 class="post-title"></h1>
     <hr>
 
     
@@ -40,10 +40,102 @@
     
 
     <div class="post-content">
-        <h3><strong>关于 Blog</strong></h3><h3><strong>关于我</strong></h3><h4>你还可以在这些地方找到我</h4><h3><strong>版权声明</strong></h3><p><img src="https://img.imjad.cn/images/2016/05/21/88x31.png" alt="知识共享许可协议"></p>
-<p>博客内的所有原创内容（包括但不限于文章、图像等）除特别声明外均采用<a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>，任何人都可以自由传播，但不得用于商用且必须署名并以相同方式分享。</p>
-<p>本站部分内容转载于网络，有出处的已在文中署名作者并附加原文链接，出处已不可寻的皆已标注来源于网络。若您认为本博客有部分内容侵犯了您的权益，请在评论区留言或电邮告知，我将认真处理。</p>
-<h3><strong>支持我</strong></h3><p>本博客为个人站点，无任何商业广告，若您想对我进行经济上的支持，请在下方选择付款方式，捐助所得资金将用于服务器/域名续费，我将对您表示感谢：)</p>
+        <ul>
+<li>前序：根左右；</li>
+<li>中序：左根右；</li>
+<li>后序：左右根；</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/xe17x7/">https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/xe17x7/</a></li>
+</ul>
+<h2>前序</h2><pre><code class="ts">/**
+ * Definition for a binary tree node.
+ * class TreeNode &#123;
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) &#123;
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     &#125;
+ * &#125;
+ */
+
+function preorderTraversal(root: TreeNode | null): number[] &#123;
+  const res = []
+  const stack = [root]
+
+  if (root == null) return []
+  while (stack.length) &#123;
+    const t1 = stack.pop()
+    res.push(t1.val)
+
+    if (t1.right != null) stack.push(t1.right)
+    if (t1.left != null) stack.push(t1.left)
+  &#125;
+  return res
+&#125;
+</code></pre>
+<h2>中序</h2><pre><code class="ts">function inorderTraversal(root: TreeNode | null): number[] &#123;
+  const stack = []
+  const res = []
+
+  while (root != null || stack.length) &#123;
+    while (root != null) &#123;
+      stack.push(root)
+      root = root.left
+    &#125;
+
+    const t = stack.pop()
+    res.push(t.val)
+    root = t.right
+  &#125;
+  return res
+&#125;
+</code></pre>
+<h2>后序</h2><pre><code class="ts">function postorderTraversal(root: TreeNode | null): number[] &#123;
+  const res = []
+  const stack = [root]
+
+  if (root == null) return []
+  while (stack.length) &#123;
+    const t1 = stack.pop()
+    res.push(t1.val)
+
+    if (t1.left != null) stack.push(t1.left)
+    if (t1.right != null) stack.push(t1.right)
+  &#125;
+  return res.reverse()
+&#125;
+</code></pre>
+<h2>层序遍历</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/xefh1i/">https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/xefh1i/</a></li>
+</ul>
+<pre><code class="ts">function levelOrder(root: TreeNode | null): number[][] &#123;
+  if (root == null) return []
+
+  const queue = [root]
+  const res = []
+
+  while (queue.length &gt; 0) &#123;
+    const size = queue.length
+    const sub = []
+
+    for (let i = 0; i &lt; size; i++) &#123;
+      const top = queue.shift()
+      sub.push(top.val)
+
+      if (top.left != null) &#123;
+        queue.push(top.left)
+      &#125;
+      if (top.right != null) &#123;
+        queue.push(top.right)
+      &#125;
+    &#125;
+    res.push(sub)
+  &#125;
+  return res
+&#125;
+</code></pre>
 
     </div>
 
