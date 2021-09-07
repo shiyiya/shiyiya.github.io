@@ -164,13 +164,36 @@ function isSymmetric(root: TreeNode | null): boolean &#123;
   return true
 &#125;
 </code></pre>
+<h2>回文链表</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnv1oc/">https://leetcode-cn.com/leetbook/read/top-interview-questions-easy/xnv1oc/</a></li>
+</ul>
+<pre><code class="ts">function isPalindrome(head: ListNode | null): boolean &#123;
+    if (!head || !head.next) &#123;
+        return true;
+    &#125;
+    const nodes = [];
+    while (head) &#123;
+        nodes.push(head.val);
+        head = head.next;
+    &#125;
+    let left = 0, right = nodes.length - 1;
+    while (left &lt; right) &#123;
+        if (nodes[left] !== nodes[right]) &#123;
+            return false;
+        &#125;
+        left++;
+        right--;
+    &#125;
+    return true;
+&#125;;
+</code></pre>
 
     </div>
 
     
 
     <script>
-        var pub_date = 1630744122707;
+        var pub_date = 1631014454410;
     </script>
 </div>
     <div class="footer"
