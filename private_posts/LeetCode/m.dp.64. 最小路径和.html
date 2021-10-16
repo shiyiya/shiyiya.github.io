@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>友链 - 佚名</title>
+    <title>佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -27,10 +27,10 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="links/index.html">
+<body id="bodyx" path="private_posts/LeetCode/m.dp.64. 最小路径和.html">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">友链</h1>
+    <h1 class="post-title"></h1>
     <hr>
 
     
@@ -40,7 +40,34 @@
     
 
     <div class="post-content">
-        <p>以下排名不分先后，暂不接受新友链申请</p>
+        <ul>
+<li><a href="">m.dp.64. 最小路径和</a></li>
+</ul>
+<pre><code class="java">public int minPathSum(int[][] grid) &#123;
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+
+        int row = grid.length, col = grid[0].length;
+        int[][] dp = new int[row][col];
+        dp[0][0] = grid[0][0];
+
+        for (int i = 1; i &lt; row; i++) &#123;
+            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        &#125;
+
+        for (int i = 1; i &lt; col; i++) &#123;
+            dp[0][i] = dp[0][i - 1] + grid[0][i];
+        &#125;
+
+        for (int r = 1; r &lt; row; r++) &#123;
+            for (int c = 1; c &lt; col; c++) &#123;
+                // 只能 上下走 即累计添加 上方 和 左方 的数字较小的一个
+                dp[r][c] = Math.min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];
+            &#125;
+        &#125;
+
+        return dp[row - 1][col - 1];
+    &#125;
+</code></pre>
 
     </div>
 

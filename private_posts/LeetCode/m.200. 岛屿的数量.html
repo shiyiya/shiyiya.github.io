@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>友链 - 佚名</title>
+    <title>佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -27,10 +27,10 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="links/index.html">
+<body id="bodyx" path="private_posts/LeetCode/m.200. 岛屿的数量.html">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">友链</h1>
+    <h1 class="post-title"></h1>
     <hr>
 
     
@@ -40,7 +40,49 @@
     
 
     <div class="post-content">
-        <p>以下排名不分先后，暂不接受新友链申请</p>
+        <ul>
+<li><a href="">m.200. 岛屿的数量</a></li>
+</ul>
+<pre><code class="java">    public int numIslands(char[][] grid) &#123;
+        int num = 0;
+        for (int i = 0; i &lt; grid.length; i++) &#123;
+            for (int j = 0; j &lt; grid[0].length; j++) &#123;
+                if (grid[i][j] == &#39;1&#39;) &#123;
+                    num += 1;
+                    numIslandsDfs(grid, i, j);
+                &#125;
+
+            &#125;
+        &#125;
+        return num;
+    &#125;
+
+    public void numIslandsDfs(char[][] grid, int r, int c) &#123;
+        if (r &lt; 0 || c &lt; 0 || r &gt;= grid.length || c &gt;= grid[0].length || grid[r][c] == &#39;0&#39;) return;
+        grid[r][c] = &#39;0&#39;;
+
+        numIslandsDfs(grid, r + 1, c);
+        numIslandsDfs(grid, r - 1, c);
+        numIslandsDfs(grid, r, c + 1);
+        numIslandsDfs(grid, r, c - 1);
+    &#125;
+
+    public void numIslandsBfs(char[][] grid, int r, int c) &#123;
+        Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(new int[]&#123;r, c&#125;);
+        while (!queue.isEmpty()) &#123;
+            int[] curr = queue.remove();
+            int x = curr[0], y = curr[1];
+            if (x &gt;= 0 &amp;&amp; y &gt;= 0 &amp;&amp; x &lt; grid.length &amp;&amp; y &lt; grid[0].length &amp;&amp; grid[x][y] == &#39;1&#39;) &#123;
+                grid[x][y] = &#39;0&#39;;
+                queue.add(new int[]&#123;x + 1, y&#125;);
+                queue.add(new int[]&#123;x - 1, y&#125;);
+                queue.add(new int[]&#123;x, y + 1&#125;);
+                queue.add(new int[]&#123;x, y - 1&#125;);
+            &#125;
+        &#125;
+    &#125;
+</code></pre>
 
     </div>
 

@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
-    <title>友链 - 佚名</title>
+    <title>佚名</title>
     
       
 <link rel="stylesheet" href="/css/style.css">
@@ -27,10 +27,10 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="links/index.html">
+<body id="bodyx" path="private_posts/LeetCode/m.695. 岛屿的最大面积.html">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
-    <h1 class="post-title">友链</h1>
+    <h1 class="post-title"></h1>
     <hr>
 
     
@@ -40,7 +40,38 @@
     
 
     <div class="post-content">
-        <p>以下排名不分先后，暂不接受新友链申请</p>
+        <ul>
+<li><a href="">m.695. 岛屿的最大面积</a></li>
+</ul>
+<pre><code class="java"> public int maxAreaOfIsland(int[][] grid) &#123;
+        int num = 0;
+        for (int i = 0; i &lt; grid.length; i++) &#123;
+            for (int j = 0; j &lt; grid[0].length; j++) &#123;
+                if (grid[i][j] == 1) &#123;
+                    // 根据当前坐标向 4 边走
+                    num = Math.max(num, dfs(grid, i, j));
+                &#125;
+
+            &#125;
+        &#125;
+        return num;
+    &#125;
+
+   public int dfs(int[][] grid, int r, int c) &#123;
+        if (!inXY(grid, r, c)) return 0;
+
+        if (grid[r][c] != 1) &#123;
+            return 0;
+        &#125;
+        grid[r][c] = 2;
+        // 深度优先
+        return 1 + dfs(grid, r + 1, c) + dfs(grid, r - 1, c) + dfs(grid, r, c + 1) + dfs(grid, r, c - 1);
+    &#125;
+
+    public boolean inXY(int[][] grid, int r, int c) &#123;
+        return r &gt;= 0 &amp;&amp; r &lt; grid.length &amp;&amp; c &gt;= 0 &amp;&amp; c &lt; grid[0].length;
+    &#125;
+</code></pre>
 
     </div>
 
