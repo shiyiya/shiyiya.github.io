@@ -87,33 +87,33 @@ console.log(result) //&#123;a: 1, b: &#123;c:&quot;c&quot;&#125;&#125;
 JSON.parse(JSON.stringify(target))
 
 // 递归遍历
-function deepCopy(target) &#123;
-  const _toString = Object.prototype.toString
+const deepCopy = (value, map = new WeakMap()) =&gt; &#123;
+  if (!value || typeof value !== &quot;object&quot;) &#123;
+    return value;
+  &#125;
+  
+  // ... other case
 
-  if (!target || typeof target !== &#39;object&#39;) &#123;
-    //null,undefined,!object
-    return target
+  //date regexp set map ...
+  if (getType(value) !== &quot;object&quot; &amp;&amp; getType(value) !== &quot;array&quot;) &#123;
+    return new value.constructor(value);
   &#125;
 
-  if (_toString.call(target) === &#39;[object Date]&#39;) &#123;
-    return new Date(target.getTime())
+  if (map.get(value)) return value;
+  map.set(value, value.constructor);
+
+  const result = Array.isArray(value) ? [] : &#123;&#125;;
+  for (const key in value) &#123;
+    result[key] = deepCopy(value[key], map);
   &#125;
 
-  if (_toString.call(target) === &#39;[object RegExp]&#39;) &#123;
-    let rules = []
-    target.global &amp;&amp; rules.push(&#39;g&#39;)
-    target.multiline &amp;&amp; rules.push(&#39;m&#39;)
-    target.ignoreCase &amp;&amp; rules.push(&#39;i&#39;)
-    return new RegExp(target.source, flags.join(&#39;&#39;))
-  &#125;
+  return result;
+&#125;;
 
-  let result = Array.isArray(target) ? [] : &#123;&#125;
-
-  for (let key in target) &#123;
-    result[key] = deepCopy(target[key])
-  &#125;
-  return result
-&#125;
+const getType = (value) =&gt; &#123;
+  const raw = Object.prototype.toString.call(value);
+  return raw.substring(&quot;[object &quot;.length, raw.length - 1).toLowerCase();
+&#125;;
 </code></pre>
 
     </div>
