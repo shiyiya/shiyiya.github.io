@@ -72,31 +72,31 @@ console.log(result) //{a: 1, b: {c:"c"}}
 JSON.parse(JSON.stringify(target))
 
 // 递归遍历
-function deepCopy(target) {
-  const _toString = Object.prototype.toString
+const deepCopy = (value, map = new WeakMap()) => {
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+  
+  // ... other case
 
-  if (!target || typeof target !== 'object') {
-    //null,undefined,!object
-    return target
+  //date regexp set map ...
+  if (getType(value) !== "object" && getType(value) !== "array") {
+    return new value.constructor(value);
   }
 
-  if (_toString.call(target) === '[object Date]') {
-    return new Date(target.getTime())
+  if (map.get(value)) return value;
+  map.set(value, value.constructor);
+
+  const result = Array.isArray(value) ? [] : {};
+  for (const key in value) {
+    result[key] = deepCopy(value[key], map);
   }
 
-  if (_toString.call(target) === '[object RegExp]') {
-    let rules = []
-    target.global && rules.push('g')
-    target.multiline && rules.push('m')
-    target.ignoreCase && rules.push('i')
-    return new RegExp(target.source, flags.join(''))
-  }
+  return result;
+};
 
-  let result = Array.isArray(target) ? [] : {}
-
-  for (let key in target) {
-    result[key] = deepCopy(target[key])
-  }
-  return result
-}
+const getType = (value) => {
+  const raw = Object.prototype.toString.call(value);
+  return raw.substring("[object ".length, raw.length - 1).toLowerCase();
+};
 ```
