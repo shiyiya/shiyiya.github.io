@@ -1,0 +1,47 @@
+和ie11搏斗
+因为业务有银行客户需求，需要系统运行在 ie11 上。本以为是一个简单愉快的配置 polyfill 的故事，甚至准备下午请个假回去睡觉。没想到早上坐下来之后，屁股没有离开过椅子，直到现在都还在继续处理。仅以本文纪念和ie搏斗的故事，如果你也有这样的需求，那从这一刻起，我们就是无间的战友。
+Ready？Go！
+在银行现场部署的同学反映，系统无法在 ie 11 打开：
+image.png
+通过下载对应的 release 包，定位到位置：
+image.png
+可以看到，因为存在模版字符串的超新特性，导致前端代码运行失败。那么问题在哪呢？一步步走着看。
+Round 1
+首先，查阅 babel 文档和 umi 文档，发现 @babel/preset-env 可以用过 targets 配置直接支持到 ie11：
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "ie": 11
+        }
+      }
+    ]
+  ]
+}
+而 umi 内置了这个配置：
+export default {
+  targets : {
+    ie : 11,
+  }
+}
+本以为很简单，重新编译后问题仍然存在，继续查看文档。
+Round 2
+通过在 umi 文档中搜索 targets，发现 esbuild 也是存在这样的配置的。
+image.png
+ref : umi 文档
+也就是说，也许是部分代码被 esbuild 编译，导致存在模版字符串。但是加上了这个配置，却导致 monaco-editor 的 worker 编译失败，无奈只好完全注释掉 esbuild。
+接下来，代码上传到雨燕部署，发现爆内存。于是直接在本地打包。
+Round 3
+本地打包后，发现代码中仍然存在一些高级语法。询问了师兄后，原来是项目开启了不使用 babel 编译 node_modules 的配置：
+导致项目依赖没有被编译。修改 type : 'all' 即可。
+Round 4
+过了nodeModulesTransform之后，长期陷入了 "Cant resolve @babel/runtime/regenerator"，但是查看 node_modules 后是存在的。按照互联网上的方法，显性依赖 @babel/runtime，过关！
+中间又陆陆续续遇到各种打包错误，git clean -dfx后重新部署解决。
+另外，打包长期遇到 set.clone is not a function导致部署不过，求救辟起老师，发现是 umi 的问问题，于是开心升级 umi！
+原因很长，大家有兴趣的自己看一下吧：https://yuque.antfin.com/bigfish/one-problem-per-week/otgua1#pIpHe
+
+
+整体的排查过程下来，体感就是：为了兼容ie，不得不使项目的编译性能一步一步下降。比如不允许使用 esbuild、不允许使用 nodeModulesTransform 等。本地打一次包需要近10分钟。同时，monaco-editor 的兼容性问题还是比较大的。
+珍惜生命，远离 ie！
