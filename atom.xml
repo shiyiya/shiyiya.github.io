@@ -6,7 +6,7 @@
   <link href="http://shiyiya.github.io/atom.xml" rel="self"/>
   
   <link href="http://shiyiya.github.io/"/>
-  <updated>2022-11-24T08:18:50.034Z</updated>
+  <updated>2022-11-24T08:20:27.576Z</updated>
   <id>http://shiyiya.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://shiyiya.github.io/archives/reactivity-in-vue3/"/>
     <id>http://shiyiya.github.io/archives/reactivity-in-vue3/</id>
     <published>2021-07-04T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
       
@@ -48,7 +48,7 @@
     <link href="http://shiyiya.github.io/archives/eventbus-introduction/"/>
     <id>http://shiyiya.github.io/archives/eventbus-introduction/</id>
     <published>2021-06-30T03:00:58.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.572Z</updated>
     
     
       
@@ -72,7 +72,7 @@
     <link href="http://shiyiya.github.io/archives/undefined/"/>
     <id>http://shiyiya.github.io/archives/undefined/</id>
     <published>2019-05-29T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;p&gt;todo&lt;/p&gt;</summary>
@@ -89,7 +89,7 @@
     <link href="http://shiyiya.github.io/archives/pwa-introduction/"/>
     <id>http://shiyiya.github.io/archives/pwa-introduction/</id>
     <published>2019-05-17T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;h2&gt;它是什么 ？&lt;/h2&gt;&lt;p&gt;Progressive Web App, 简称 PWA，是提升 Web App 的体验的一种新方法，能给用户（类）原生应用的体验。&lt;/p&gt;
@@ -112,7 +112,7 @@
     <link href="http://shiyiya.github.io/archives/implementation-simple-react-Redux/"/>
     <id>http://shiyiya.github.io/archives/implementation-simple-react-Redux/</id>
     <published>2019-03-12T06:42:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.572Z</updated>
     
     
     <summary type="html">&lt;h2&gt;前言&lt;/h2&gt;&lt;p&gt;在 React 组件中，大部分组件或多或少都会需要一下 &lt;code&gt;状态&lt;/code&gt;, 来维持 &amp;amp; 切换自身的 UI 状态, 他可能是自身的 State, 也许是外部传递的 Props, 都可以作为自身 UI 的一个切换的控制开关。&lt;/p&gt;
@@ -134,7 +134,7 @@
     <link href="http://shiyiya.github.io/archives/classical-inheritance-in-JavaScript-ES5/"/>
     <id>http://shiyiya.github.io/archives/classical-inheritance-in-JavaScript-ES5/</id>
     <published>2018-12-24T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.572Z</updated>
     
     
     <summary type="html">&lt;p&gt;在 JavaScript 中，最让人困扰的几根莫过于 this、闭包、作用域、原型链，而却常常看又常常忘，最近又看了一下高程感觉清晰了很多，于是就想写在这里（水一篇文章）。&lt;/p&gt;</summary>
@@ -151,7 +151,7 @@
     <link href="http://shiyiya.github.io/archives/how-to-set-correctly-font-family/"/>
     <id>http://shiyiya.github.io/archives/how-to-set-correctly-font-family/</id>
     <published>2018-09-26T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;p&gt;在不同操作系统、不同游览器里面默认显示的字体是不一样的，为了保持各个平台渲染效果保持一致或者使得显示效果更好，我们就需要设置好 font-family。&lt;/p&gt;
@@ -175,7 +175,7 @@
     <link href="http://shiyiya.github.io/archives/migration-guide-for-webpck4/"/>
     <id>http://shiyiya.github.io/archives/migration-guide-for-webpck4/</id>
     <published>2018-09-19T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;p&gt;全新的 webpack（4）来了，带来了全新的特性，更快的性能，更少的配置，先来升级踩波坑吧！&lt;/p&gt;</summary>
@@ -192,7 +192,7 @@
     <link href="http://shiyiya.github.io/archives/do-something-interesting-with-JS/"/>
     <id>http://shiyiya.github.io/archives/do-something-interesting-with-JS/</id>
     <published>2018-06-30T02:51:10.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.572Z</updated>
     
     
     <summary type="html">&lt;h2&gt;离开和进入页面时改变 title&lt;/h2&gt;&lt;p&gt;利用 Page Visibility，该规范定义了一种用于站点开发人员以编程方式确定页面的当前可见性状态以便开发功率和 CPU 高效的 Web 应用程序的手段。&lt;/p&gt;</summary>
@@ -209,7 +209,7 @@
     <link href="http://shiyiya.github.io/archives/js-shallow-copy-and-deep-copy/"/>
     <id>http://shiyiya.github.io/archives/js-shallow-copy-and-deep-copy/</id>
     <published>2018-06-29T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;h2&gt;浅复制和深复制的区别？&lt;/h2&gt;&lt;ul&gt;
@@ -230,7 +230,7 @@
     <link href="http://shiyiya.github.io/archives/react-redux-introduction/"/>
     <id>http://shiyiya.github.io/archives/react-redux-introduction/</id>
     <published>2018-05-21T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;p&gt;Redux 是 JavaScript 状态容器，提供可预测化的状态管理。&lt;br&gt;React-Redux 用于连接 React、Redux。&lt;/p&gt;</summary>
@@ -247,7 +247,7 @@
     <link href="http://shiyiya.github.io/archives/how-to-set-correctly-font-family/"/>
     <id>http://shiyiya.github.io/archives/how-to-set-correctly-font-family/</id>
     <published>2018-01-26T16:00:00.000Z</published>
-    <updated>2022-11-24T08:18:50.034Z</updated>
+    <updated>2022-11-24T08:20:27.576Z</updated>
     
     
     <summary type="html">&lt;p&gt;虽然 React 官方有提供一个 create-react-app 的脚手架，并给出了各种在开发过程中需要的扩展配置文档：比如如果你想用 sass，它会教你怎么做，不知道如何部署，它也告诉你了；甚至还告诉你如何用 prettier 去 lint 代码；但本着折腾的精神，也来小小实现一番。&lt;/p&gt;</summary>
