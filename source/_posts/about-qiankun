@@ -5,4 +5,46 @@ update: 2023-03-11
 tags: []
 ---
 
-TODO
+## qiankun 概述
+
+```js
+import { registerMicroApps, start } from 'qiankun'
+
+registerMicroApps([
+  {
+    name: 'react app', // app name registered
+    entry: '//localhost:7100',
+    container: '#yourContainer',
+    activeRule: '/yourActiveRule'
+  },
+  {
+    name: 'vue app',
+    entry: { scripts: ['//localhost:7100/main.js'] },
+    container: '#yourContainer2',
+    activeRule: '/yourActiveRule2'
+  }
+])
+
+start()
+```
+
+上面这段代码引入 qiankun 注册子应用路由，当匹配路由时挂在对应的应用到容器。
+
+那么它是如何做到监听路由并加载子应用呢？看下主要依赖
+
+- single-spa：利用其能力绑定子路由，监听路由变化对子应用进行调度。
+- import-html-entry： 加载并解析子应用的信息，使用 html 作为子应用的入口。
+
+```json
+ "dependencies": {
+    "import-html-entry": "^1.14.3",
+    "single-spa": "^5.9.2",
+    // ...
+  },
+```
+
+## 路由
+
+## 子应用加载解析
+
+## 沙箱隔离（js,css）
