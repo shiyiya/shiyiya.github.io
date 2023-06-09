@@ -1,3 +1,17 @@
+---
+
+title: 为什么我的 React 组件重新渲染(re-render)了
+
+date: 2023-06-09
+
+update: 2023-06-09
+
+tags: [react]
+
+urlname: why-did-my-react-component-rerender.md
+
+---
+
 ## 为什么我的 React 组件重新渲染(re-render)了
 
 ## render or re-render
