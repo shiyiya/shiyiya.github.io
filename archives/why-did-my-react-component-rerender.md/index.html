@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <title>为什么我的 React 组件重新渲染(re-render)了 - 佚名</title>
+    
+      
+<link rel="stylesheet" href="/css/style.css">
+
+      
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+      
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+      
+<link rel="stylesheet" href="/libs/zpix/zpix.css">
+
+      
+<script src="/js/theme.js"></script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
+</head>
+
+<body id="bodyx" path="archives/why-did-my-react-component-rerender.md/">
+    <div class="hd posts">
+    <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <h1 class="post-title">为什么我的 React 组件重新渲染(re-render)了</h1>
+    <hr>
+
+    
+        <div class="outdated-notify">
+            本文发布于 <span class="num">-</span> 天前，文中所描述的信息可能已发生改变或是过时，请注意辨别
+        </div>
+    
+
+    <div class="post-content">
+        <h2>为什么我的 React 组件重新渲染(re-render)了</h2><h2>render or re-render</h2><p>渲染分为首次渲染(render)和更新(re-render); 首次渲染是不可避免的, 当组件的 props,state 或者 context 等依赖发生改变时则会触发当前组件和子组件的重新渲染, 当更新过于频繁、嵌套过深就可能产生卡顿或性能问题. 下面这个例子中 Child 会随着 state, context, props 等的变更而重新渲染.</p>
+<pre><code class="jsx">const Context = createContext()
+
+const Provider = (&#123; children &#125;) =&gt; &#123;
+  const [count, setCount] = useState(0)
+
+  return (
+    &lt;Context.Provider value=&#123;count&#125;&gt;
+      &lt;button onClick=&#123;() =&gt; setCount((c) =&gt; (c += 1))&#125;&gt;p +&lt;/button&gt; - &#123;children&#125;
+    &lt;/Context.Provider&gt;
+  )
+&#125;
+
+const Parent = () =&gt; &#123;
+  const [count, setCount] = useState(0)
+
+  return (
+    &lt;Provider&gt;
+      &lt;button onClick=&#123;() =&gt; setCount((c) =&gt; (c += 1))&#125;&gt;s +&lt;/button&gt;
+      &lt;br /&gt;
+      &lt;Child count=&#123;count&#125; /&gt;
+    &lt;/Provider&gt;
+  )
+&#125;
+
+const Child = (&#123; count &#125;) =&gt; &#123;
+  const pcount = useContext(Context)
+
+  console.log(&#39;render&#39;, count, pcount)
+  return (
+    &lt;span&gt;
+      &#123;pcount&#125;-&#123;count&#125;
+    &lt;/span&gt;
+  )
+&#125;
+</code></pre>
+<h2>props 变更就重新渲染么? 避免非必要更新</h2><p>根据之前说的, 当 props 变化后子组件触发 re-render, 真的是这样么?<br>下面例子中当我点击增加 count 时, 尽管 2 没有依赖 count、3 甚至没有接受 props,但是他们都触发了 re-render, 这是因为渲染是自上而下的, 当组件的父级重新渲染时, 组件自身也会重新渲染, 很明显 2 和 3 的更新是不必要的,如果组件较<code>重</code>,就可能出问题了.</p>
+<pre><code class="jsx">const Parent = () =&gt; &#123;
+  const [count, setCount] = useState(0)
+  const [count2, setCount2] = useState(0)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; setCount((c) =&gt; (c += 1))&#125;&gt;+&lt;/button&gt;
+      &#123;&#39; - &#39;&#125;
+      &lt;button onClick=&#123;() =&gt; setCount2((c) =&gt; (c += 1))&#125;&gt;+&lt;/button&gt;
+      &lt;br /&gt;
+      &lt;Child count=&#123;count&#125; /&gt;
+      &lt;Child2 count=&#123;count2&#125; /&gt;
+      &lt;Child3 /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+const Child = (&#123; count &#125;) =&gt; &#123;
+  console.log(&#39;render&#39;, count)
+
+  return &lt;span&gt;&#123;count&#125;&lt;/span&gt;
+&#125;
+
+const Child2 = (&#123; count &#125;) =&gt; &#123;
+  console.log(&#39;render Child2&#39;)
+
+  return &lt;span&gt;&#123;count&#125;&lt;/span&gt;
+&#125;
+
+const Child3 = () =&gt; &#123;
+  console.log(&#39;render Child3&#39;)
+
+  return &lt;span&gt;hi&lt;/span&gt;
+&#125;
+</code></pre>
+<p>解决: 使用 memo 避免非必要更. memo 会对 props 进行前浅比较(Object.is), 当新旧 props 一致时跳过本次 re-render.</p>
+<pre><code class="jsx">//使用 memo 后只有 count 变更才触发组件的 re-render
+const Child = React.memo((&#123; count &#125;) =&gt; &#123;
+  console.log(&#39;render&#39;, count)
+  return &lt;span&gt;&#123;count&#125;&lt;/span&gt;
+&#125;)
+</code></pre>
+<h2>声明的 props 真的没变么? 避免引用类型的 props 传递</h2><p>我们把每个组件看作一个函数, 当组件每次 render 时实际上等于重新执行了这个函数, 所以内部声明将会重建, 引用类型的新值将不会等于旧值.</p>
+<pre><code class="jsx">// 它们都是 false
+console.log(Object.is(&#123;&#125;, &#123;&#125;))
+console.log(
+  Object.is(
+    () =&gt; &#123;&#125;,
+    () =&gt; &#123;&#125;
+  )
+)
+// etc...
+</code></pre>
+<p>此时如果将其作为 props 传递给子组件, 将会导致子组件认为 props 被更新, 而引起非必要更新,下面例子中,只要父组件更新, count,renderChild 都将会重建, 从而引发子组件的 re-render.</p>
+<pre><code class="jsx">// 常见写法
+const Parent = () =&gt; &#123;
+  const [, forceUpdate] = useState(&#123;&#125;)
+  const count = &#123; value: 0 &#125; // 引用发生改变
+  const handle = () =&gt; &#123;&#125; // 每次都是新函数
+  const Header = () =&gt; &lt;h1&gt;hi&lt;/h1&gt; // 每次都是全新的组件
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; forceUpdate(&#123;&#125;)&#125;&gt;+&lt;/button&gt;
+      &lt;br /&gt;
+      &lt;Child count=&#123;count&#125; header=&#123;Header&#125; handle=&#123;handle&#125; /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
+  console.log(&#39;render&#39;, count.value)
+  return (
+    &lt;&gt;
+      &lt;Header /&gt;
+      &lt;span&gt;&#123;count.value&#125;&lt;/span&gt;
+    &lt;/&gt;
+  )
+&#125;)
+</code></pre>
+<p>解决:</p>
+<ul>
+<li>使用 useMemo, useCallback, useRef 缓存相关的值. 它们都可以保证相同的引用</li>
+</ul>
+<pre><code class="jsx">const ObjectProps = () =&gt; &#123;
+  const [, forceUpdate] = useState(&#123;&#125;)
+  const count = useRef(&#123; value: 0 &#125;)
+  const handle = useCallback(() =&gt; &#123;&#125;, [])
+  const Header = useMemo(() =&gt; () =&gt; &lt;h1&gt;hi&lt;/h1&gt;, [])
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; forceUpdate(&#123;&#125;)&#125;&gt;+&lt;/button&gt;
+      &lt;br /&gt;
+      &lt;Child count=&#123;count&#125; header=&#123;Header&#125; handle=&#123;handle&#125; /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
+  console.log(&#39;render&#39;, count?.value)
+  console.log(Header)
+  return (
+    &lt;&gt;
+      &lt;Header /&gt;
+      &#123;count.current?.value&#125;
+    &lt;/&gt;
+  )
+&#125;)
+</code></pre>
+<h2>memo 不是银弹</h2><p>使用 memo,useCallback,useMemo, 也是有有成本的, 应该合理的组建、拆分我们的 React 组件,奖状态者向下传递转移.</p>
+<ul>
+<li>bad</li>
+</ul>
+<pre><code class="jsx">const Parent = () =&gt; &#123;
+  const [show, toggle] = useState(false)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &#123;show &amp;&amp; &lt;CompA /&gt;&#125;
+      &lt;CompB /&gt;
+      &lt;CompC /&gt;
+    &lt;/&gt;
+  )
+&#125;
+</code></pre>
+<ul>
+<li>good</li>
+</ul>
+<pre><code class="jsx">// 向下传递状态
+const Toggle = () =&gt; &#123;
+  const [show, toggle] = useState(false)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &#123;show &amp;&amp; &lt;CompA /&gt;&#125;
+    &lt;/&gt;
+  )
+&#125;
+const Parent = () =&gt; &#123;
+  return (
+    &lt;&gt;
+      &lt;CompB /&gt;
+      &lt;CompC /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+// 向下传递状态
+const Toggle = forwardRef((_, ref) =&gt; &#123;
+  const [show, toggle] = useState(false)
+
+  useImperativeHandle(ref, toggle, [])
+
+  return &lt;&gt;&#123;show &amp;&amp; &lt;CompA /&gt;&#125;&lt;/&gt;
+&#125;)
+
+const Parent = () =&gt; &#123;
+  const ref = useRef()
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &lt;Toggle /&gt;
+      &lt;CompB /&gt;
+      &lt;CompC /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+//组件作为 props
+const Wrap = (&#123; A, B &#125;) =&gt; &#123;
+  const [show, toggle] = useState(false)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; ref.current?.((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &#123;A&#125;
+      &#123;B&#125;
+    &lt;/&gt;
+  )
+&#125;
+
+const Parent = () =&gt; &#123;
+  const ref = useRef()
+
+  return (
+    &lt;&gt;
+      &lt;Wrap b=&#123;&lt;CompB /&gt;&#125; C=&#123;&lt;CompC /&gt;&#125; /&gt;
+    &lt;/&gt;
+  )
+&#125;
+
+// 使用状态管理
+import &#123; atom, useAtomValue, useSetAtom &#125; from &#39;jotai&#39;
+
+const showAtom = atom(false)
+
+const Toggle = () =&gt; &#123;
+  const show = useAtomValue(false)
+  return &lt;&gt;&#123;show &amp;&amp; &lt;CompA /&gt;&#125;&lt;/&gt;
+&#125;
+
+const Parent = () =&gt; &#123;
+  const toggle = useSetAtom(showAtom)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &lt;CompB /&gt;
+      &lt;CompC /&gt;
+    &lt;/&gt;
+  )
+&#125;
+</code></pre>
+
+    </div>
+
+    
+
+    <script>
+        var pub_date = 1686240000000;
+    </script>
+</div>
+    <div class="footer"
+     id="footer">
+    <p>
+        Copyright © 2020 <a class="flink"
+           href="http://shiyiya.github.io">佚名</a>
+        <br>
+        <label class="el-switch el-switch-green el-switch-sm"
+               style="vertical-align: sub;">
+            <input type="checkbox"
+                   name="switch"
+                   id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+    </p>
+</div>
+
+<a href="javascript:void(0);" class="back-to-top" target="_self"></a>
+
+<input type="hidden"
+       id="web_style"
+       value="white">
+<input type="hidden"
+       id="valine_appid"
+       value="CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz">
+<input type="hidden"
+       id="valine_appKey"
+       value="uWuwGS1xiIwh3zHKENc7ubyL">
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+
+  
+<script src="/libs/jquery.min.js"></script>
+
+  
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+  
+<script src="/js/js.js"></script>
+
+
+<style type="text/css">
+    .v .vlist .vcard .vhead .vsys {
+        color: #3a3e4a;
+    }
+
+    .v .vlist .vcard .vh .vmeta .vat {
+        color: #638fd5;
+    }
+
+    .v .vlist .vcard .vhead .vnick {
+        color: #6ba1ff;
+    }
+
+    .v a {
+        color: #8696b1;
+    }
+
+    .v .vlist .vcard .vhead .vnick:hover {
+        color: #669bfc;
+    }
+
+    .v .vcards .vcard .vhead .vnick {
+        padding-left: 1px;
+    }
+
+    .v .vcontent .vemoji {
+        max-width: 30px;
+    }
+
+    .v[data-class=v] p {
+        color: inherit;
+    }
+
+</style>
+
+<!-- Load TweenLite -->
+<script src="https://cdn.jsdelivr.net/npm/greensock@1.20.2/dist/TweenLite.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117481437-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117481437-1');
+</script>
+
+
+</body>
+
+</html>
