@@ -1,15 +1,9 @@
 ---
-
 title: 为什么我的 React 组件重新渲染(re-render)了
-
 date: 2023-06-09
-
 update: 2023-06-09
-
 tags: [react]
-
 urlname: why-did-my-react-component-rerender.md
-
 ---
 
 ## 为什么我的 React 组件重新渲染(re-render)了
@@ -243,8 +237,8 @@ const Parent = () => {
 
   return (
     <>
-      <button onClick={() => toggle((v) => !v)}>toggle</button>
-      <Toggle />
+      <button onClick={() => ref.current?.((v) => !v)}>toggle</button>
+      <Toggle ref={ref}/>
       <CompB />
       <CompC />
     </>
@@ -257,7 +251,7 @@ const Wrap = ({ A, B }) => {
 
   return (
     <>
-      <button onClick={() => ref.current?.((v) => !v)}>toggle</button>
+      <button onClick={() => toggle((v) => !v)}>toggle</button>
       {A}
       {B}
     </>
@@ -265,8 +259,6 @@ const Wrap = ({ A, B }) => {
 }
 
 const Parent = () => {
-  const ref = useRef()
-
   return (
     <>
       <Wrap b={<CompB />} C={<CompC />} />
@@ -280,7 +272,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 const showAtom = atom(false)
 
 const Toggle = () => {
-  const show = useAtomValue(false)
+  const show = useAtomValue(showAtom)
   return <>{show && <CompA />}</>
 }
 
