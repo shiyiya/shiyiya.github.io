@@ -241,8 +241,8 @@ const Parent = () =&gt; &#123;
 
   return (
     &lt;&gt;
-      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
-      &lt;Toggle /&gt;
+      &lt;button onClick=&#123;() =&gt; ref.current?.((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &lt;Toggle ref=&#123;ref&#125;/&gt;
       &lt;CompB /&gt;
       &lt;CompC /&gt;
     &lt;/&gt;
@@ -255,7 +255,7 @@ const Wrap = (&#123; A, B &#125;) =&gt; &#123;
 
   return (
     &lt;&gt;
-      &lt;button onClick=&#123;() =&gt; ref.current?.((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
       &#123;A&#125;
       &#123;B&#125;
     &lt;/&gt;
@@ -263,8 +263,6 @@ const Wrap = (&#123; A, B &#125;) =&gt; &#123;
 &#125;
 
 const Parent = () =&gt; &#123;
-  const ref = useRef()
-
   return (
     &lt;&gt;
       &lt;Wrap b=&#123;&lt;CompB /&gt;&#125; C=&#123;&lt;CompC /&gt;&#125; /&gt;
@@ -278,7 +276,7 @@ import &#123; atom, useAtomValue, useSetAtom &#125; from &#39;jotai&#39;
 const showAtom = atom(false)
 
 const Toggle = () =&gt; &#123;
-  const show = useAtomValue(false)
+  const show = useAtomValue(showAtom)
   return &lt;&gt;&#123;show &amp;&amp; &lt;CompA /&gt;&#125;&lt;/&gt;
 &#125;
 
