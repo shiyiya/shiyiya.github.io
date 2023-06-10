@@ -187,7 +187,7 @@ const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
   )
 &#125;)
 </code></pre>
-<h2>memo 不是银弹</h2><p>使用 memo,useCallback,useMemo, 也是有有成本的, 应该合理的组建、拆分我们的 React 组件,奖状态者向下传递转移.</p>
+<h2>memo 不是银弹</h2><p>使用 memo,useCallback,useMemo, 也是有有成本的, 应该合理的组建、拆分我们的 React 组件, 奖状态者向下传递转移.</p>
 <ul>
 <li>bad</li>
 </ul>
@@ -198,6 +198,7 @@ const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
     &lt;&gt;
       &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
       &#123;show &amp;&amp; &lt;CompA /&gt;&#125;
+      &#123;/* show 更新触发下面 re-render */&#125;
       &lt;CompB /&gt;
       &lt;CompC /&gt;
     &lt;/&gt;
@@ -221,6 +222,8 @@ const Toggle = () =&gt; &#123;
 const Parent = () =&gt; &#123;
   return (
     &lt;&gt;
+      &lt;Toggle /&gt;
+      &#123;/* 不会 re-render */&#125;
       &lt;CompB /&gt;
       &lt;CompC /&gt;
     &lt;/&gt;
@@ -243,6 +246,7 @@ const Parent = () =&gt; &#123;
     &lt;&gt;
       &lt;button onClick=&#123;() =&gt; ref.current?.((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
       &lt;Toggle ref=&#123;ref&#125;/&gt;
+      &#123;/* 不会 re-render */&#125;
       &lt;CompB /&gt;
       &lt;CompC /&gt;
     &lt;/&gt;
@@ -250,14 +254,15 @@ const Parent = () =&gt; &#123;
 &#125;
 
 //组件作为 props
-const Wrap = (&#123; A, B &#125;) =&gt; &#123;
+const Wrap = (&#123; b, c &#125;) =&gt; &#123;
   const [show, toggle] = useState(false)
 
   return (
     &lt;&gt;
       &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
-      &#123;A&#125;
-      &#123;B&#125;
+      &#123;/* 不会 re-render */&#125;
+      &#123;b&#125;
+      &#123;c&#125;
     &lt;/&gt;
   )
 &#125;
@@ -265,11 +270,34 @@ const Wrap = (&#123; A, B &#125;) =&gt; &#123;
 const Parent = () =&gt; &#123;
   return (
     &lt;&gt;
-      &lt;Wrap b=&#123;&lt;CompB /&gt;&#125; C=&#123;&lt;CompC /&gt;&#125; /&gt;
+      &lt;Wrap b=&#123;&lt;CompB /&gt;&#125; c=&#123;&lt;CompC /&gt;&#125; /&gt;
     &lt;/&gt;
   )
 &#125;
 
+// children
+const Wrap = (&#123; children &#125;) =&gt; &#123;
+  const [show, toggle] = useState(false)
+
+  return (
+    &lt;&gt;
+      &lt;button onClick=&#123;() =&gt; toggle((v) =&gt; !v)&#125;&gt;toggle&lt;/button&gt;
+      &#123;/* 不会 re-render */&#125;
+      &#123;children&#125;
+    &lt;/&gt;
+  )
+&#125;
+
+const Parent = () =&gt; &#123;
+  return (
+    &lt;Wrap&gt;
+      &lt;CompB /&gt;
+      &lt;CompC /&gt;
+    &lt;/Wrap&gt;
+  )
+&#125;
+
+// 
 import &#123; atom, useAtomValue, useSetAtom &#125; from &#39;jotai&#39;
 
 const showAtom = atom(false)
