@@ -25,11 +25,10 @@
 <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="佚名" type="application/atom+xml">
 </head>
 
-<body id="bodyx" path="archives/why-did-my-react-component-rerender.md/">
+<body id="bodyx" path="archives/why-did-my-react-component-rerender/">
     <div class="hd posts">
     <a class="back" href="javascript:void(0);" target="_self"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
     <h1 class="post-title">为什么我的 React 组件重新渲染(re-render)了</h1>
-    <hr>
 
     
         <div class="outdated-notify">
@@ -38,7 +37,7 @@
     
 
     <div class="post-content">
-        <h2>为什么我的 React 组件重新渲染(re-render)了</h2><h2>render or re-render</h2><p>渲染分为首次渲染(render)和更新(re-render); 首次渲染是不可避免的, 当组件的 props,state 或者 context 等依赖发生改变时则会触发当前组件和子组件的重新渲染, 当更新过于频繁、嵌套过深就可能产生卡顿或性能问题. 下面这个例子中 Child 会随着 state, context, props 等的变更而重新渲染.</p>
+        <h2>render or re-render</h2><p>渲染分为首次渲染(render)和更新(re-render); 首次渲染是不可避免的, 当组件的 props,state 或者 context 等依赖发生改变时则会触发当前组件和子组件的重新渲染, 当更新过于频繁、嵌套过深就可能产生卡顿或性能问题. 下面这个例子中 Child 会随着 state, context, props 等的变更而重新渲染.</p>
 <pre><code class="jsx">const Context = createContext()
 
 const Provider = (&#123; children &#125;) =&gt; &#123;
@@ -128,13 +127,12 @@ console.log(
 )
 // etc...
 </code></pre>
-<p>此时如果将其作为 props 传递给子组件, 将会导致子组件认为 props 被更新, 而引起非必要更新,下面例子中,只要父组件更新, count,renderChild 都将会重建, 从而引发子组件的 re-render.</p>
-<pre><code class="jsx">// 常见写法
-const Parent = () =&gt; &#123;
+<p>此时如果将其作为 props 传递给子组件, 将会导致子组件认为 props 被更新, 而引起非必要更新,下面例子中,只要父组件更新, count,handle,Header 都将会重建, 从而引发子组件的 re-render.</p>
+<pre><code class="jsx">const Parent = () =&gt; &#123;
   const [, forceUpdate] = useState(&#123;&#125;)
   const count = &#123; value: 0 &#125; // 引用发生改变
   const handle = () =&gt; &#123;&#125; // 每次都是新函数
-  const Header = () =&gt; &lt;h1&gt;hi&lt;/h1&gt; // 每次都是全新的组件
+  const Header = () =&gt; &lt;h1&gt;hi&lt;/h1&gt; // 同上
 
   return (
     &lt;&gt;
@@ -157,9 +155,14 @@ const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
 </code></pre>
 <p>解决:</p>
 <ul>
-<li>使用 useMemo, useCallback, useRef 缓存相关的值. 它们都可以保证相同的引用</li>
+<li>使用 useMemo, useCallback, useRef 缓存相关的值. 它们都可以保证相同的引用, 当依赖更改时更新</li>
 </ul>
-<pre><code class="jsx">const ObjectProps = () =&gt; &#123;
+<pre><code class="jsx">// 不依赖上下文可直接提到外面 
+const count = &#123; value: 0 &#125;
+const handle = () =&gt; &#123;&#125;
+const Header = () =&gt; &lt;h1&gt;hi&lt;/h1&gt;
+
+const ObjectProps = () =&gt; &#123;
   const [, forceUpdate] = useState(&#123;&#125;)
   const count = useRef(&#123; value: 0 &#125;)
   const handle = useCallback(() =&gt; &#123;&#125;, [])
@@ -176,7 +179,6 @@ const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
 
 const Child = memo((&#123; count, header: Header, handle &#125;) =&gt; &#123;
   console.log(&#39;render&#39;, count?.value)
-  console.log(Header)
   return (
     &lt;&gt;
       &lt;Header /&gt;
@@ -268,7 +270,6 @@ const Parent = () =&gt; &#123;
   )
 &#125;
 
-// 使用状态管理
 import &#123; atom, useAtomValue, useSetAtom &#125; from &#39;jotai&#39;
 
 const showAtom = atom(false)
@@ -293,6 +294,9 @@ const Parent = () =&gt; &#123;
 
     </div>
 
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
     
 
     <script>
@@ -322,10 +326,10 @@ const Parent = () =&gt; &#123;
        value="white">
 <input type="hidden"
        id="valine_appid"
-       value="CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz">
+       value="0VdJvwgGxrkFSQ32YtzsfBGo-MdYXbMMI">
 <input type="hidden"
        id="valine_appKey"
-       value="uWuwGS1xiIwh3zHKENc7ubyL">
+       value="ZtFbMZgQRKoxRV8pIJhKTDvp">
 <script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
 
   
@@ -378,16 +382,6 @@ const Parent = () =&gt; &#123;
 
 
 
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117481437-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-117481437-1');
-</script>
 
 
 </body>
