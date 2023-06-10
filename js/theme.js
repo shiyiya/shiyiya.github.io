@@ -53,12 +53,12 @@
   }
 
 
-  var win = '\
-  body, .post-content {\
-    font-family: serif\
-  }\
-  '
-  if(/windows|win32/i.test(navigator.userAgent)){
-    addStyle(win, 'pixel-font-fix')
-  }
+  // var win = '\
+  // body, .post-content {\
+  //   font-family: serif\
+  // }\
+  // '
+  // if(/windows|win32/i.test(navigator.userAgent)){
+  //   addStyle(win, 'pixel-font-fix')
+  // }
 })();

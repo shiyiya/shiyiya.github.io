@@ -6,7 +6,7 @@ body {
   color: #51525d;
   font-weight: 400;
   font-size: 14px;
-  font-family: 'Zpix', serif;
+  font-family: 'MiSans', serif;
   line-height: 1.725;
   text-rendering: geometricPrecision;
   transition: background-color 0.6s;
@@ -102,7 +102,7 @@ a:hover {
   color: #6d9ee7;
 }
 .logot {
-  font-family: 'Zpix', serif;
+  font-family: 'MiSans', serif;
   font-weight: bold;
   font-size: 25px;
   margin-top: -8px;
@@ -157,7 +157,7 @@ hr {
 }
 .posts .post-title {
   text-align: center;
-  font-family: 'Zpix', serif;
+  font-family: 'MiSans', serif;
   font-weight: 400;
   font-size: 24px;
   line-height: 1.2;
@@ -169,7 +169,7 @@ hr {
   margin: 20px 0;
   color: #333;
   background: #ffec6f;
-  font-family: 'Zpix', serif;
+  font-family: 'MiSans', serif;
   font-size: 12px;
 }
 .posts .post-content a {
@@ -306,7 +306,7 @@ hr {
   position: relative;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: 'Zpix', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family: 'MiSans', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
