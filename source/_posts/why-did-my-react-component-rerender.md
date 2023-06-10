@@ -182,7 +182,7 @@ const Child = memo(({ count, header: Header, handle }) => {
 
 ## memo 不是银弹
 
-使用 memo,useCallback,useMemo, 也是有有成本的, 应该合理的组建、拆分我们的 React 组件,奖状态者向下传递转移.
+使用 memo,useCallback,useMemo, 也是有有成本的, 应该合理的组建、拆分我们的 React 组件, 奖状态者向下传递转移.
 
 - bad
 
@@ -194,6 +194,7 @@ const Parent = () => {
     <>
       <button onClick={() => toggle((v) => !v)}>toggle</button>
       {show && <CompA />}
+      {/* show 更新触发下面 re-render */}
       <CompB />
       <CompC />
     </>
@@ -218,6 +219,8 @@ const Toggle = () => {
 const Parent = () => {
   return (
     <>
+      <Toggle />
+      {/* 不会 re-render */}
       <CompB />
       <CompC />
     </>
@@ -240,6 +243,7 @@ const Parent = () => {
     <>
       <button onClick={() => ref.current?.((v) => !v)}>toggle</button>
       <Toggle ref={ref}/>
+      {/* 不会 re-render */}
       <CompB />
       <CompC />
     </>
@@ -247,14 +251,15 @@ const Parent = () => {
 }
 
 //组件作为 props
-const Wrap = ({ A, B }) => {
+const Wrap = ({ b, c }) => {
   const [show, toggle] = useState(false)
 
   return (
     <>
       <button onClick={() => toggle((v) => !v)}>toggle</button>
-      {A}
-      {B}
+      {/* 不会 re-render */}
+      {b}
+      {c}
     </>
   )
 }
@@ -262,11 +267,34 @@ const Wrap = ({ A, B }) => {
 const Parent = () => {
   return (
     <>
-      <Wrap b={<CompB />} C={<CompC />} />
+      <Wrap b={<CompB />} c={<CompC />} />
     </>
   )
 }
 
+// children
+const Wrap = ({ children }) => {
+  const [show, toggle] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => toggle((v) => !v)}>toggle</button>
+      {/* 不会 re-render */}
+      {children}
+    </>
+  )
+}
+
+const Parent = () => {
+  return (
+    <Wrap>
+      <CompB />
+      <CompC />
+    </Wrap>
+  )
+}
+
+// 
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 
 const showAtom = atom(false)
