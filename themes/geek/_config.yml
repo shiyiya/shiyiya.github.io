@@ -13,9 +13,9 @@ menu:
 # 做了域名限制，请改成自己的 KEY
 # 若关闭valine 设置enable为false
 valine:
-  enable: false
-  appId: CaQKuPQDfnfPFUkTw6MMt8ME-gzGzoHsz
-  appKey: uWuwGS1xiIwh3zHKENc7ubyL
+  enable: true
+  appId: 0VdJvwgGxrkFSQ32YtzsfBGo-MdYXbMMI
+  appKey: ZtFbMZgQRKoxRV8pIJhKTDvp
 
 highlight:
   enable: false
@@ -25,5 +25,5 @@ cdn:
   url: https://cdn.jsdelivr.net/gh/journey-ad/nocilol.me
 
 analytics:
-  enabled: true
+  enabled: false
   googleId: UA-117481437-1

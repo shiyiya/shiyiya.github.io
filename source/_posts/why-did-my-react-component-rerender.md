@@ -3,10 +3,8 @@ title: 为什么我的 React 组件重新渲染(re-render)了
 date: 2023-06-09
 update: 2023-06-09
 tags: [react]
-urlname: why-did-my-react-component-rerender.md
+urlname: why-did-my-react-component-rerender
 ---
-
-## 为什么我的 React 组件重新渲染(re-render)了
 
 ## render or re-render
 
@@ -117,15 +115,14 @@ console.log(
 // etc...
 ```
 
-此时如果将其作为 props 传递给子组件, 将会导致子组件认为 props 被更新, 而引起非必要更新,下面例子中,只要父组件更新, count,renderChild 都将会重建, 从而引发子组件的 re-render.
+此时如果将其作为 props 传递给子组件, 将会导致子组件认为 props 被更新, 而引起非必要更新,下面例子中,只要父组件更新, count,handle,Header 都将会重建, 从而引发子组件的 re-render.
 
 ```jsx
-// 常见写法
 const Parent = () => {
   const [, forceUpdate] = useState({})
   const count = { value: 0 } // 引用发生改变
   const handle = () => {} // 每次都是新函数
-  const Header = () => <h1>hi</h1> // 每次都是全新的组件
+  const Header = () => <h1>hi</h1> // 同上
 
   return (
     <>
@@ -149,9 +146,14 @@ const Child = memo(({ count, header: Header, handle }) => {
 
 解决:
 
-- 使用 useMemo, useCallback, useRef 缓存相关的值. 它们都可以保证相同的引用
+- 使用 useMemo, useCallback, useRef 缓存相关的值. 它们都可以保证相同的引用, 当依赖更改时更新
 
 ```jsx
+// 不依赖上下文可直接提到外面 
+const count = { value: 0 }
+const handle = () => {}
+const Header = () => <h1>hi</h1>
+
 const ObjectProps = () => {
   const [, forceUpdate] = useState({})
   const count = useRef({ value: 0 })
@@ -169,7 +171,6 @@ const ObjectProps = () => {
 
 const Child = memo(({ count, header: Header, handle }) => {
   console.log('render', count?.value)
-  console.log(Header)
   return (
     <>
       <Header />
@@ -266,7 +267,6 @@ const Parent = () => {
   )
 }
 
-// 使用状态管理
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 
 const showAtom = atom(false)
