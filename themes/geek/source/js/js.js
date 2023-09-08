@@ -1,6 +1,7 @@
 var web_style = $("#web_style").val();
 var valine_appid = $("#valine_appid").val();
 var valine_appKey = $("#valine_appKey").val();
+var $comments = document.getElementById('vcomments')
 
 new Valine({
   el: '#vcomments',
@@ -11,19 +12,22 @@ new Valine({
   requiredFields: ['nick'],
 })
 
-
-document.getElementById('vcomments').addEventListener('click', (e) => {
-  if (e.target.classList.value == 'vsubmit vbtn') {
-    const [u, m, c, p] = Array.from(document.querySelectorAll('.vinput')).map(it => it.value)
-    fetch('https://oaii.vercel.app/api/comment', {
-      method: 'post', body: JSON.stringify({
-        username: u, mail: m, content: c, post_id: p
+if ($comments) {
+  $comments.addEventListener('click', (e) => {
+    if (e.target.classList.value == 'vsubmit vbtn') {
+      const [u, m, s, c] = Array.from(document.querySelectorAll('.vinput')).map(it => it.value)
+      if (!c || !u) {
+        alert('username/conetnt empty!')
+        return
+      }
+      fetch('https://oaii.vercel.app/api/comment', {
+        method: 'post', body: JSON.stringify({
+          username: u, mail: m, content: c, post_id: document.body.getAttribute('path'), site: s
+        })
       })
-    })
-  }
-})
+    }
+  })
 
-if (document.body.getAttribute('path').slice(0, 8) == 'archives') {
   fetch(`https://oaii.vercel.app/api/comment?post_id=${document.body.getAttribute('path')}`).then(comments => {
     document.querySelector('.vempty').insertAdjacentHTML('beforebegin', comments.map(comment => {
       return `<li>${comment.username}: ${comment.content} <small style='color:#bbb'>${new Date(comment.createdAt).toLocaleString()}</small></li>`
@@ -31,7 +35,6 @@ if (document.body.getAttribute('path').slice(0, 8) == 'archives') {
 
     document.querySelector('.vempty').remove()
   })
-
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
