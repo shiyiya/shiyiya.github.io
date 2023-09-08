@@ -10,7 +10,7 @@ new Valine({
   placeholder: '请输入内容...',
   avatar: 'retro',
   requiredFields: ['nick'],
-})
+}) 
 
 if ($comments) {
   $comments.addEventListener('click', (e) => {
@@ -24,14 +24,14 @@ if ($comments) {
         method: 'post', body: JSON.stringify({
           username: u, mail: m, content: c, post_id: document.body.getAttribute('path'), site: s
         })
-      })
+      }).then(() => location.reload())
     }
   })
 
   fetch(`https://oaii.vercel.app/api/comment?post_id=${document.body.getAttribute('path')}`).then(it => it.json()).then(comments => {
     document.querySelector('.vempty').insertAdjacentHTML('beforebegin', comments.map(comment => {
       return `<li>${comment.username}: ${comment.content} <small style='color:#bbb'>${new Date(comment.createdAt).toLocaleString()}</small></li>`
-    }))
+    }).json())
 
     document.querySelector('.vempty').remove()
   })
